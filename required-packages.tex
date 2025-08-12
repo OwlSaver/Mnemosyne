@@ -1,0 +1,143 @@
+\usepackage{lastpage}
+
+%==============================================================================
+% CORE ENGINE, GEOMETRY & DEBUGGING
+%==============================================================================
+% This class uses the geometry.sty package to set the document margins.
+\if@gwu@debug
+  % Show frame around text area for debugging page layout.
+  \RequirePackage[top=1in,bottom=1in,left=1.25in, right=1.25in, showframe]{geometry}
+\else
+  % Use the standard margins for the final thesis version.
+  \RequirePackage[top=1in,bottom=1in,left=1.25in, right=1.25in]{geometry}
+\fi
+
+% Check for and warn about obsolete packages or commands being used in the document.
+% It's a good practice to keep this for maintaining a modern document.
+\RequirePackage[l2tabu,orthodox]{nag}
+
+% Provides powerful conditional logic (e.g., \if... \else... \fi).
+\RequirePackage{ifthen}
+
+%==============================================================================
+% TYPOGRAPHY & FONTS
+%==============================================================================
+% These packages together create a modern and robust typesetting environment.
+\RequirePackage[utf8]{inputenc} % Allows direct input of UTF-8 characters (e.g., é, ö, à).
+\RequirePackage[T1]{fontenc}      % Selects modern font encoding for better hyphenation and character support.
+\RequirePackage{textcomp}         % Provides many extra symbols in text mode.
+\RequirePackage{microtype}        % Improves typography with subtle protrusion and expansion for better justification.
+\RequirePackage{indentfirst}      % Indents the first paragraph of a section.
+
+% --- FONT SELECTION ---
+% The original file loaded multiple conflicting font packages (lmodern, mathptmx, tgbonum).
+% A thesis should use ONE consistent font family. The 'newtx' pair provides a modern,
+% high-quality Times clone that is excellent for academic work.
+\RequirePackage[scaled=1.21]{newtxtext}        % Provides the Times-like text font.
+\RequirePackage[cmintegrals]{newtxmath} % Provides matching math fonts.
+\RequirePackage{bm}               % Needed for bold math symbols (\bm).
+
+% The 'soul' package can be fragile and break compilation. Use with caution.
+\RequirePackage{soul}
+
+%==============================================================================
+% MATHEMATICS
+%==============================================================================
+% A standard suite of powerful math packages from the American Mathematical Society (AMS).
+\RequirePackage{amsmath}          % Core package with advanced math environments.
+%\RequirePackage{amssymb}          % Provides additional math symbols.
+\RequirePackage{amsfonts}         % Provides additional math fonts.
+\RequirePackage{mathtools}        % An extension of amsmath with fixes and more tools.
+% The amsfonts/newtxmath packages define \openbox, which conflicts with amsthm.
+% We undefine it here to allow amsthm to load without error.
+\let\openbox\relax
+\RequirePackage{amsthm}           % For typesetting theorems, definitions, etc.
+\RequirePackage{siunitx}          % For typesetting physical units and numbers, e.g., \SI{10}{\kilo\gram}.
+
+%==============================================================================
+% GRAPHICS, FIGURES & FLOATS
+%==============================================================================
+\RequirePackage{graphicx}         % The essential package for including images.
+\RequirePackage{subcaption}       % For creating subfigures (e.g., Figure 1a, 1b). Modern replacement for subfigure.
+\RequirePackage{float}            % Improves control over float placement, provides [H] option.
+
+%==============================================================================
+% HEADERS, FOOTERS & INDEX
+%==============================================================================
+% This is the package for special headers and footers.
+\RequirePackage{fancyhdr}
+
+% This package is for the index, if it is to be used.
+\if@gwu@index
+  \RequirePackage{makeidx}
+  \makeindex
+\fi
+
+%==============================================================================
+% LISTS, CODE & SPACING
+%==============================================================================
+\RequirePackage{setspace}         % For controlling line spacing (e.g., \doublespacing).
+\RequirePackage{verbatim}         % Provides the 'verbatim' environment for code.
+
+%==============================================================================
+% HYPERLINKS & REFERENCING (Load these last)
+%==============================================================================
+% Provides colors to be used by hyperref and other packages.
+\RequirePackage{xcolor}
+
+% This will make labels and references hyperlinks in the PDF.
+% Hyperref should generally be the LAST package loaded, with a few exceptions.
+\if@gwu@backref
+  % Use back-references in the bibliography.
+  \RequirePackage[pagebackref=true]{hyperref}
+\else
+  % Do not use back references.
+  \RequirePackage{hyperref}
+\fi
+
+% Modern hyperref setup for clickable, clean links.
+\hypersetup{%
+    unicode=true,             % Allow non-Latin characters in Acrobat’s bookmarks.
+    pdftoolbar=true,          % Show Acrobat’s toolbar.
+    pdfmenubar=true,          % Show Acrobat’s menu.
+    pdffitwindow=false,       % Window fit to page when opened.
+    pdfstartview={FitH},      % Fits the width of the page to the window.
+    pdftitle={Thesis Title},  % Set your default title.
+    pdfauthor={Author Name},  % Set your default author.
+    pdfnewwindow=true,        % Links in new PDF window.
+    colorlinks=true,          % Color the links instead of using boxes.
+    linkcolor=black,          % Color of internal links (TOC, figures).
+    citecolor=black!50!black, % Color of citations.
+    urlcolor=black!80!black,   % Color of URLs.
+    bookmarksdepth=3,
+    bookmarksopen=true
+}
+
+% Cleveref provides smart cross-referencing (\cref instead of Fig.~\ref).
+% It MUST be loaded after hyperref. Using \AtEndOfClass is a robust way to ensure this.
+\AtEndOfClass{\RequirePackage[noabbrev,capitalize]{cleveref}}
+\RequirePackage{varioref} % For fancier referencing like "on the next page".
+
+%==============================================================================
+% GLOSSARY & ACRONYMS (Load after hyperref)
+%==============================================================================
+% The `glossaries-extra` package handles glossaries, lists of symbols, and acronyms.
+% It is more powerful than the legacy `acronym` package, which is now redundant.
+\RequirePackage[abbreviations,symbols,shortcuts=none,automake]{glossaries-extra}
+\glsxtrRevertTocMarks % Fixes a common warning with table of contents packages.
+
+%==============================================================================
+% DEBUGGING TOOLS (Conditional Loading)
+%==============================================================================
+\if@gwu@debug
+  % Show labels for referencing in the margin.
+  \RequirePackage[final,notcite,notref]{showlabels}
+  % Check for unused references/labels.
+  \RequirePackage{refcheck}
+\fi
+
+%==============================================================================
+% TOC/LOF/LOT Customization
+%==============================================================================
+\RequirePackage{tocloft}
+\RequirePackage{calc} % Provides tools for calculations, often used by other packages for layout.

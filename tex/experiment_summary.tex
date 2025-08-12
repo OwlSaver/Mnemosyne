@@ -1,0 +1,150 @@
+\chapter{Experimental Results}
+\section{Overview of Experiments}
+This document details the results of the experimental run conducted on \today.
+The following experiment groups and individual experiments were executed:
+\begin{itemize}
+  \item \textbf{Group: Mnemosyne test with GPT 4.1}
+  \begin{itemize}
+    \item Mnemosyne GPT 4.1 Test
+    \item Mnemosyne GPT 4.1 mini Test
+    \item Mnemosyne GPT 4.1 nano Test
+  \end{itemize}
+\end{itemize}
+\section{Summary of Results}
+\begin{longtable}{p{0.4\textwidth}rrr}
+\toprule
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\midrule
+\endhead
+Mnemosyne GPT 4.1 Test & 90.55\% & 57.45\% & 14.86\% \\
+Mnemosyne GPT 4.1 mini Test & 77.33\% & 71.11\% & 11.49\% \\
+Mnemosyne GPT 4.1 nano Test & 16.39\% & 44.94\% & 0.00\% \\
+\bottomrule
+\caption{Summary of key performance metrics for each successful experiment.}
+\end{longtable}
+\clearpage
+\section{Mnemosyne test with GPT 4.1}
+\subsection{Mnemosyne GPT 4.1 Test}
+A baseline tool test using the flagship GPT 4.1 model. This experiment processes the 'NER Test 1' document to verify the complete data extraction and refinement pipeline, establishing a benchmark for the 4.1 series.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP001\_input\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP001\_entity\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP001\_relationship\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP001\_ontology\_graph.png}
+  \caption{Visualizations for Mnemosyne GPT 4.1 Test. Top-left: Input Text. Top-right: Extracted Entities. Bottom-left: Relationship Types. Bottom-right: Type Ontology.}
+\end{figure}
+\clearpage
+\subsubsection{Hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Llm Provider & OpenAI \\
+Llm Model & gpt-4.1 \\
+Temperature & 0.1 \\
+Chunk Size & 7 \\
+Chunk Overlap & 2 \\
+Num Refinement Cycles & 2 \\
+\bottomrule
+\end{tabular}
+
+\subsubsection{Results}
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Status & Success \\
+Duration Seconds & 361.461499 \\
+Final Nodes & 125 \\
+Final Relationships & 393 \\
+Overall Score & 90.55\% \\
+Entity F1 Score & 57.45\% \\
+Relationship F1 Score & 14.86\% \\
+\bottomrule
+\end{tabular}
+\subsection{Mnemosyne GPT 4.1 mini Test}
+A tool test using the more agile GPT 4.1-mini model. This experiment processes the 'NER Test 1' document to evaluate the performance and accuracy of a smaller, faster model within the same family.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP002\_input\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP002\_entity\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP002\_relationship\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP002\_ontology\_graph.png}
+  \caption{Visualizations for Mnemosyne GPT 4.1 mini Test. Top-left: Input Text. Top-right: Extracted Entities. Bottom-left: Relationship Types. Bottom-right: Type Ontology.}
+\end{figure}
+\clearpage
+\subsubsection{Hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Llm Provider & OpenAI \\
+Llm Model & gpt-4.1-mini \\
+Temperature & 0.1 \\
+Chunk Size & 7 \\
+Chunk Overlap & 2 \\
+Num Refinement Cycles & 2 \\
+\bottomrule
+\end{tabular}
+
+\subsubsection{Results}
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Status & Success \\
+Duration Seconds & 420.490714 \\
+Final Nodes & 94 \\
+Final Relationships & 326 \\
+Overall Score & 77.33\% \\
+Entity F1 Score & 71.11\% \\
+Relationship F1 Score & 11.49\% \\
+\bottomrule
+\end{tabular}
+\subsection{Mnemosyne GPT 4.1 nano Test}
+A tool test using the most lightweight GPT 4.1-nano model. This experiment processes the 'NER Test 1' document to assess the capabilities of the smallest model, focusing on speed and cost-efficiency.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP003\_input\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP003\_entity\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP003\_relationship\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP002EXP003\_ontology\_graph.png}
+  \caption{Visualizations for Mnemosyne GPT 4.1 nano Test. Top-left: Input Text. Top-right: Extracted Entities. Bottom-left: Relationship Types. Bottom-right: Type Ontology.}
+\end{figure}
+\clearpage
+\subsubsection{Hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Llm Provider & OpenAI \\
+Llm Model & gpt-4.1-nano \\
+Temperature & 0.1 \\
+Chunk Size & 7 \\
+Chunk Overlap & 2 \\
+Num Refinement Cycles & 2 \\
+\bottomrule
+\end{tabular}
+
+\subsubsection{Results}
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Status & Success \\
+Duration Seconds & 260.402711 \\
+Final Nodes & 72 \\
+Final Relationships & 329 \\
+Overall Score & 16.39\% \\
+Entity F1 Score & 44.94\% \\
+Relationship F1 Score & 0.00\% \\
+\bottomrule
+\end{tabular}

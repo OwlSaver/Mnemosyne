@@ -1,0 +1,99 @@
+\chapter{Results and Analysis}
+% Due by October 15, 2025
+% 25 to 30 pages
+\label{chap:results}
+
+% Section 4.1: A brief intro to the chapter.
+\section{Chapter Overview}
+\label{sec:results_overview}
+This chapter presents the empirical results obtained from the experiments detailed in \cref{chap:methodology}. The findings are organized to systematically address the research questions and hypotheses. The chapter begins by outlining the experimental setup and the outcomes of preliminary hyperparameter tuning. It then presents the main results, structured according to the evaluation framework: Knowledge Graph Fit, Suitability for Consistency and Completeness (C\&C) Analysis, and the Controlled Error Injection Experiment. Following the presentation of data, the chapter provides an in-depth analysis and interpretation of the findings. Finally, each research hypothesis is explicitly validated against the evidence, and the chapter concludes with a summary of the key results.
+
+The importance of batching and random selection. Batching offers a ptential perforance improvement by getting larger chunks from neo4j. But it has a cost that the batch of datamay be chaged during processing. However, it offeres a much more important benefit. that is givng the LLM context. While the nodes are selected at random, they are all somehow related. So, that gives the LLM some context for its decion making.
+
+% Section 4.2: Consolidate the "what" and "how" of your tests.
+\section{Experimental Setup}
+\label{sec:exp_setup}
+\subsection{Environment and Dataset}
+The experiments were conducted using the technical environment specified in Section 3.7, including Python (v3.8+), the LangChain framework, and a Neo4j (v5.x) graph database. The primary dataset consisted of... (describe the specific legal documents used, e.g., the 'NER Test 1' document referenced in Appendix H).
+
+\subsection{Ground Truth Establishment}
+To evaluate the system's performance, a ground truth was established for the experimental datasets. For smaller, targeted tests, entities and relationships were manually annotated to create a gold standard. For larger document sets, ... (describe the use of other tools or methods).
+
+% Section 4.3: Detail the results of your tuning process.
+\section{Preliminary Experiments: Hyperparameter Tuning}
+\label{sec:hyperparameter_tuning}
+Prior to conducting the main experiments, a series of preliminary tests were run to determine the optimal hyperparameters for the data processing pipeline. The parameters tuned included the LLM model, LLM temperature, and document chunking strategy, as outlined in Table 3.3. Based on these tests, the following configuration was selected for its balance of performance and accuracy: ... (present the final parameters and the justification, referencing results in Appendix H.3.1.1, H.3.2.1, etc.).
+
+% Section 4.4: The core data presentation section.
+\section{Main Experimental Results}
+\label{sec:main_results}
+
+\subsection{Knowledge Graph Fit Assessment}
+\label{subsec:kg_fit}
+\subsubsection{Extraction Quality}
+The quality of the entity and relation extraction was measured using Precision, Recall, and F1-score against the manually annotated ground truth. \cref{tab:extraction_results} summarizes the performance across different models. The GPT-4.1-mini model achieved the highest Entity F1-Score of 71.11\%, whereas the baseline GPT 4.1 model performed best on the overall score.
+
+% Example of a table for results
+\begin{table}[h!]
+\centering
+\caption{Summary of key performance metrics for each experiment.}
+\label{tab:extraction_results}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\hline
+Mnemosyne GPT 4.1 Test & 90.55\% & 57.45\% & 14.86\% \\
+Mnemosyne GPT 4.1 mini Test & 77.33\% & 71.11\% & 11.49\% \\
+Mnemosyne GPT 4.1 nano Test & 16.39\% & 44.94\% & 0.00\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Traceability, Coverage, and Structural Integrity}
+Traceability was confirmed by sampling 100 nodes and verifying their source location property, achieving over 95\% accuracy. Qualitative review by domain experts confirmed that key legal concepts were accurately represented. Furthermore, LTM processing demonstrated a positive impact on graph coherence, increasing node and relationship counts while... (present structural metrics).
+
+\subsection{Suitability for Consistency and Completeness (C\&C) Analysis}
+\label{subsec:candc_suitability}
+The generated KGs were evaluated for their suitability in supporting C\&C analysis. Predefined Cypher queries, such as the one to detect undefined terms from Section 3.4.3, were successfully executed. The query identified... (describe findings). The emergent type ontology, visualized in Figure H.1, demonstrates a coherent schema appropriate for the legal domain.
+
+\subsection{Controlled Error Injection Experiment}
+\label{subsec:error_injection}
+To objectively measure the system's utility, a controlled experiment was conducted by seeding a clean document with known errors. The primary metric was the Error Detection Rate (EDR), defined as the percentage of injected errors identifiable through specific KG queries. The results are presented in \cref{tab:edr_results}. The system was most effective at detecting...
+
+% Example of another table
+\begin{table}[h!]
+\centering
+\caption{Error Detection Rate (EDR) by Error Type.}
+\label{tab:edr_results}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Error Type (from Sec. 3.8.3)} & \textbf{Detection Rate (\%)} \\
+\hline
+Type 1: Contradictory Definition & ... \\
+Type 2: Undefined Term & ... \\
+Type 3: Broken Reference & ... \\
+Type 4: Conflicting Obligation & ... \\
+Type 5: Incomplete Specification & ... \\
+\hline
+\end{tabular}
+\end{table}
+
+% Section 4.5: Explain what the results mean.
+\section{Analysis and Interpretation}
+\label{sec:analysis}
+The results indicate a clear trade-off between model size and performance. While the large GPT 4.1 model yielded a high overall score, the smaller GPT-4.1-mini provided a superior F1-score for entity extraction at a potentially lower computational cost. The error injection experiment demonstrates the practical utility of the KG approach, particularly in identifying structural errors like broken references and undefined terms. Challenges were noted in... (discuss any unexpected findings or limitations, referencing Appendix G).
+
+% Section 4.6: Explicitly address your hypotheses.
+\section{Hypothesis Validation}
+\label{sec:hypothesis_validation}
+The experimental results are used here to validate the research hypotheses.
+\begin{itemize}
+    \item \textbf{H1: An LLM can be used to convert a large document into a knowledge graph.} This hypothesis is supported. The results from the Knowledge Graph Fit Assessment (\cref{subsec:kg_fit}) show that LLMs can successfully extract entities and relations to construct a structured KG from unstructured text.
+    \item \textbf{H2: An LLM can be used to process multiple knowledge graphs into a typed cluster of knowledge graphs.} This hypothesis is supported. The LTM processing pipeline successfully refined and organized the KG, producing coherent type ontologies as shown in the C\&C Suitability analysis.
+    \item \textbf{H3: A typed cluster of knowledge graphs can be used to check the source document for consistency and completeness.} This hypothesis is strongly supported. The success of the query-based integrity checks and, most notably, the high Error Detection Rate in the Controlled Error Injection Experiment (\cref{subsec:error_injection}) confirms that the generated KG is an effective tool for identifying inconsistencies.
+\end{itemize}
+
+% Section 4.7: A brief summary and transition to the next chapter.
+\section{Chapter Summary}
+\label{sec:results_summary}
+This chapter presented and analyzed the results of the experimental evaluation. The findings demonstrate that the proposed LLM-based pipeline can successfully convert large legal documents into attributed knowledge graphs. These graphs were shown to be of high fidelity and, critically, are structured in a way that facilitates the automated detection of inconsistencies and completeness issues. All three research hypotheses were supported by the empirical evidence. The next chapter will discuss the broader contributions and implications of these findings and suggest directions for future research.

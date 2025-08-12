@@ -1,0 +1,29 @@
+% !TEX root = ../thesis.tex
+\chapter{Source Code}
+This appendix contains the complete source code for the project. The code is organized by file and includes comments to explain the functionality of key sections. This allows for a thorough review of the implementation and facilitates future development or replication of the work. For larger projects, a link to a code repository (e.g., GitHub) may be more appropriate and can be included here.
+
+\chapter{Class Structure}
+This appendix provides a detailed description of the class structure implemented in the program. For each class, it includes the attributes, methods, and their respective purposes. A UML (Unified Modeling Language) diagram is also provided to visually represent the relationships and inheritance between the classes, offering a clear overview of the program's architecture.
+
+\chapter{JSON Structure}
+This appendix describes the JSON (JavaScript Object Notation) structure utilized to constrain the large language models (LLMs). It outlines the schema, including the key-value pairs, data types, and nested structures. Examples of the JSON objects are provided to illustrate how specific constraints are defined and passed to the LLMs to guide their output.
+
+\chapter{Cypher Queries}
+This appendix contains the Cypher queries used for data creation, manipulation, and retrieval from the Neo4j graph database. Each query is presented with a brief description of its function and the context in which it was executed. This provides a transparent and replicable account of all database interactions central to this project.
+
+\chapter{Prompts}
+This appendix contains a comprehensive list of all prompts used to interact with the LLMs. Each prompt is presented verbatim, accompanied by a description of its purpose, the context in which it was used, and the expected format of the response. This section is intended to ensure the replicability of the research by detailing the exact inputs given to the models.
+
+\chapter{Evaluation Metrics}
+This appendix details the metrics used to evaluate the performance of the system. It provides the mathematical formulas for each metric, explains why each was chosen, and describes the methodology used for its calculation. This ensures that the evaluation process is transparent and reproducible.
+
+\chapter{Problems Encountered}
+This appendix serves as a log of the significant problems encountered during the project's development and execution. For each issue, it details the nature of the problem, the steps taken to diagnose it, the attempted solutions, and the final resolution. This section aims to provide a transparent account of the research process and to assist others who might face similar challenges.
+
+Entities needed IDs but the LLM has no realtime access so no GUID or time based IDs. They had to be nique accros chunks. So, I cam up with an approaach passing in the date, time, chunk number and document name. It is not space efficent.
+
+Constantly having to reset colab. After running for several minutes, in somecases colab neeeds to be restarted. this was particularly problematic dring development where each change wold reqire a restart.
+
+neo4j shuts down
+
+I had to pt in several rety sections because the LLM wold sometimes produce bad results.

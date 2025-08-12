@@ -1,0 +1,157 @@
+% !TEX root = ../thesis.tex
+%==============================================================================
+% --- CORE THESIS INFORMATION ---
+%==============================================================================
+% Full title of the thesis. Capitalize all significant words.
+\title{Using Large Language Models to Convert Documents to Knowledge Graphs to Check for Completeness and Consistency}
+
+% Author's name as it should appear on the title page.
+\author{Michael Wacey}
+
+% Year of completion for copyright page and other parts of the document.
+\year=2026
+
+% The person or entity holding the copyright.
+% By default, this is the author. Uncomment to change it.
+%\copyrightholder{Someone Else}
+
+
+%==============================================================================
+% --- DEGREE & GRADUATION INFORMATION ---
+%==============================================================================
+% Previous Degrees
+\bachelordegree{B.S.}
+\bsdepartment{Computer Science}
+\bsschool{Washington University in St. Louis}
+\bsgrad{June 1985}
+
+\masterdegree{M.S.}
+\msdepartment{Computer Science}
+\msschool{Drexel University}
+\msgrad{December 1990}
+\showmsdegree % Use \hidemsdegree if you do not want to display the Master's degree.
+
+% Doctoral Degree Information
+\phdschool{The School of Engineering and Applied Science}
+\phdgrad{March 8, 2026}
+\defensedate{December 18, 2025}
+
+
+%==============================================================================
+% --- COMMITTEE MEMBERS ---
+%==============================================================================
+% This section defines all committee members for the committee page.
+
+% -- Praxis Director / Chair --
+% The Chair (Praxis Director) is defined separately for formatting reasons.
+\chair{Professor M. Elbasheer}
+\department{Engineering and Applied Science}
+\chairtitle{Professorial Lecturer in \insertdepartment}
+
+% -- Co-Chair (Optional) --
+% Uncomment the next two lines ONLY if you have a co-chair.
+% \cochair{Dr. Co-Chair Person}
+% \cochairtitle{Professor of \insertdepartment}
+
+% -- Committee Member List --
+% Fill in your committee members below. The class will automatically format them.
+% The Praxis Director is automatically included as the first member.
+\committee{
+    % The template automatically adds your Praxis Director here.
+    % If you have a Co-Director, define \cochair above and they will be added automatically.
+
+    % Add your other committee members below, separated by a blank line.
+    % Format: Full Name, Title, Committee Member \hfill
+
+    XYZ, Professor of Online Engineering Programs, Chair \hfill
+
+    \vspace{\baselineskip} % Use \vspace for consistent spacing between members
+
+    XYZ, Professorial Lecturer of Engineering and Applied Science, Committee Member \hfill
+
+    \vspace{\baselineskip}
+
+    % For any external examiners, add their university or company.
+    % External Examiner Name, Title, University Name, Committee Member \hfill
+}
+
+
+%==============================================================================
+% --- DEDICATION & ACKNOWLEDGMENTS ---
+%==============================================================================
+\dedication{
+In loving memory of my parents, Jack and Helen. I dedicate this work to their belief in me and the lessons they taught. From my mother, I learned what is possible through sheer determination. The memory of her returning to school to earn a master's in economics while raising our family is an inspiration that I carry with me always. From both of my parents, I received the encouragement and love of learning that made this achievement possible.
+
+\vspace{1cm}
+
+To my siblings, Gordon, Carole, and Iain, who have graciously and humorously allowed me to neglect them during this endeavor. I am deeply grateful for your patience and look forward to reconnecting now that it is complete.
+
+\vspace{1cm}
+
+To my children, Alex, Peter, and Kayla. Your unwavering support and quiet understanding have been a constant source of strength. Thank you for inspiring me to see this through.
+
+\vspace{1cm}
+
+And most importantly, to my lovely wife, Elaine. You encouraged me to start this journey, sustained me with endless coffee and patience when the mornings were early or the nights grew long, and became my partner in every sense of the word. You will now be living with the results, and I am eternally grateful. This achievement is as much yours as it is mine.
+}
+
+\acknowledgments{
+I would like to express my profound gratitude to my advisor, Dr. Elabasheer, whose mentorship was instrumental in guiding this research. He showed me the way forward when the path was unclear and challenged me to think more critically. Whenever I find myself thinking I cannot multitask or overcome a challenge, I will undoubtedly hear his voice reminding me that I must—a lesson in perseverance I will carry throughout my career.
+
+My deepest appreciation extends to all my professors at The George Washington University who taught me during this program. Their dedication to teaching and intellectual generosity created the rich academic environment and provided the abundant knowledge that were essential for this journey.
+
+I am also deeply grateful to my West Chester University Dean, Dr. Burns, who served as a steadfast source of support. He was always available to listen to my trials and tribulations, and with a few short, insightful words, he consistently helped me untangle complex problems and understand how to proceed. His wisdom and perspective were invaluable.
+
+A special and heartfelt thank you is reserved for my wife, Elaine. As a lawyer, her tolerance for dense text is matched only by her sharp eye for detail—both of which were indispensable gifts to this project. She patiently read every single word at least ten times, and her contribution to this work is immeasurable.
+
+Finally, I wish to acknowledge my students. Their intellectual curiosity and enthusiasm for learning were a constant source of motivation. It was my desire to be a more effective and knowledgeable teacher for them that provided the final impetus to see this project through to its completion. You reminded me daily of why this work matters.
+}
+
+
+%==============================================================================
+% --- FRONT MATTER CONTROL PANEL ---
+%==============================================================================
+% Use these commands to show or hide the various front matter pages.
+
+% -- Core Pages --
+\showcopyright
+\showabstract
+\showcommitteepage
+\showdedication
+\showacknowledgments
+
+% -- Optional Pages --
+\hidepreface
+\hideprologue
+\hideforeword
+
+% -- Lists of Content --
+\showtableofcontents
+\showlistoffigures
+\showlistoftables
+
+
+%==============================================================================
+% --- GLOSSARIES, SYMBOLS, & ABBREVIATIONS ---
+%==============================================================================
+% This template uses the powerful `glossaries-extra` package.
+% Ensure all your definitions are in the file specified below.
+\makeglossaries % This command is essential to generate the lists.
+\input{tex/glossary-definitions} % All \newglossaryentry commands are in this file.
+
+% Use these commands to control which lists appear in your document.
+% The three main types are the List of Abbreviations, the Glossary of Terms,
+% and the List of Symbols (Nomenclature).
+\showglossarieslistofabbreviations
+\showglossariesglossaryofterms
+\hidenomenclature % or \showlistoftables
+
+
+%==============================================================================
+% --- ABSTRACT ---
+%==============================================================================
+% Your abstract should be between 200 and 350 words.
+\abstract{
+This praxis details the design, implementation, and evaluation of Mnemosyne, a system that leverages Large Language Models to convert legal documents into knowledge graphs...
+\lipsum[1] % Placeholder text
+}

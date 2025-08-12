@@ -1,0 +1,236 @@
+% !TEX root = ../thesis.tex
+
+% --------- FRONT MATTER PAGES ---------------------
+
+% Title of the thesis
+\title{Using Large Language Models to Convert Documents to Knowledge Graphs to Check for Completeness and Consistency}
+% capitalize significant words!
+
+% Author name
+\author{Michael Wacey}
+
+% Previous degrees
+\bachelordegree{B.S.}
+\bsdepartment{Computer Science}
+\bsschool{Washington University in St. Louis}
+\bsgrad{June 1985} % "month year"
+
+\masterdegree{M.S.}
+\msdepartment{Computer Science}
+\msschool{Drexel University}
+\msgrad{December 1990} % "month year"
+% you can show or hide the MS degree line
+\showmsdegree
+% \hidemsdegree
+
+% PhD degree commands
+% Committee
+\showcommitteepage % hide this page if you're doing a MS thesis
+%\hidecommitteepage 
+
+
+% define COMMITTEE information
+
+% in general, note that administrative titles are not used, instead use "professorial titles"?
+
+% Chair must be entered separately for formatting reasons.
+\chair{Professor M. Elbasheer}
+\department{Engineering and Applied Science}
+\chairtitle{Professorial Lecturer in \insertdepartment}
+
+% uncomment and use the below if you have a co-chair. note the code reacts to the \cochair{} , not the \cochairtitle{}
+% \cochair{Co-Chair Person}
+% \cochairtitle{Just-as-Amazing Professor of \insertdepartment}
+
+\phdschool{The School of Engineering and Applied Science}
+
+\committee{ 
+% director first
+\insertchair, \insertchairtitle, Praxis Director
+
+% remember to add a space between committee members
+%\vspace{\baselineskip}
+
+\IfNoText{\insertcochair}
+    { % if you have no co-chair, leave \cochair{} undefined/blank and fill in the next line
+    % Full Name, Title, Praxis Director/Praxis Co-Director/Committee Member \hfill
+    % Shahryar Sarkani, Professorial Lecturer of Engineering and Applied Science, Committee Member \hfill
+
+    }{ % if you have defind these, it will fill in the below:
+        \insertcochair, 
+        \IfNoText{\insertcochairtitle}{\textbf{DEFINE CO-CHAIR TITLE}}{\insertcochairtitle}, 
+        Praxis Co-Director \hfill
+    }
+
+%\vspace{\baselineskip}
+
+% note you shouldn't write "The George Washington University" at all- it is implied
+% Full Name, Title, Praxis Director/Praxis Co-Director/Committee Member \hfill
+% Shahryar Sarkani, Professorial Lecturer of Engineering and Applied Science /Committee Member \hfill
+
+\vspace{\baselineskip}
+
+XYZ, Professor of Online Engineering Programs, Chair \hfill
+
+\vspace{\baselineskip}
+
+XYZ, Professorial Lecturer of Engineering and Applied Science, Committee Member \hfill
+
+
+% external examiner
+% Name of External Examiner, Professorial Title, Name of External University (or Name, Job Title, Name of External Company), Committee Member  % include university or company of any external examiner! but still "committee member"
+}
+
+\phdgrad{March 8, 2026}  % Month DD, YYYY
+\defensedate{December 18, 2025}  % Month DD, YYYY
+% Year of completion for copyright page and perhaps other places
+\year=2026
+
+% Copyright page
+%\copyrightholder{Someone else}
+
+% Dedication
+\dedication{
+In loving memory of my parents, Jack and Helen. I dedicate this work to their belief in me and the lessons they taught. From my mother, I learned what is possible through sheer determination. The memory of her returning to school to earn a master's in economics while raising our family is an inspiration that I carry with me always. From both of my parents, I received the encouragement and love of learning that made this achievement possible.
+
+\vspace{1cm}
+
+To my siblings, Gordon, Carole, and Iain, who have graciously and humorously allowed me to neglect them during this endeavor. I am deeply grateful for your patience and look forward to reconnecting now that it is complete.
+
+\vspace{1cm}
+
+To my children, Alex, Peter, and Kayla. Your unwavering support and quiet understanding have been a constant source of strength. Thank you for inspiring me to see this through.
+
+\vspace{1cm}
+
+And most importantly, to my lovely wife, Elaine. You encouraged me to start this journey, sustained me with endless coffee and patience when the mornings were early or the nights grew long, and became my partner in every sense of the word. You will now be living with the results, and I am eternally grateful. This achievement is as much yours as it is mine.
+}
+
+% Acknowledgments
+\acknowledgments{
+I would like to express my profound gratitude to my advisor, Dr. Elabasheer, whose mentorship was instrumental in guiding this research. He showed me the way forward when the path was unclear and challenged me to think more critically. Whenever I find myself thinking I cannot multitask or overcome a challenge, I will undoubtedly hear his voice reminding me that I must—a lesson in perseverance I will carry throughout my career.
+
+My deepest appreciation extends to all my professors at The George Washington University who taught me during this program. Their dedication to teaching and intellectual generosity created the rich academic environment and provided the abundant knowledge that were essential for this journey.
+
+I am also deeply grateful to my West Chester University Dean, Dr. Burns, who served as a steadfast source of support. He was always available to listen to my trials and tribulations, and with a few short, insightful words, he consistently helped me untangle complex problems and understand how to proceed. His wisdom and perspective were invaluable.
+
+A special and heartfelt thank you is reserved for my wife, Elaine. As a lawyer, her tolerance for dense text is matched only by her sharp eye for detail—both of which were indispensable gifts to this project. She patiently read every single word at least ten times, and her contribution to this work is immeasurable.
+
+Finally, I wish to acknowledge my students. Their intellectual curiosity and enthusiasm for learning were a constant source of motivation. It was my desire to be a more effective and knowledgeable teacher for them that provided the final impetus to see this project through to its completion. You reminded me daily of why this work matters.
+}
+
+
+% commands to show or hide front matter pages
+% ############################THIS I CHANGE TO SHOW AND HIDE#########
+\showcopyright
+\showabstract
+\showcommitteepage
+\showdedication
+\showacknowledgments
+\hidepreface
+\hideprologue
+\hideforeword
+
+% Commands to hide or show lists of figures, tables, etc.
+\showtableofcontents
+\showlistoffigures
+\showlistoftables
+\hidenomenclature
+%###################################################THE ABOVE IS WHAT WAS WORKING
+
+
+
+
+
+
+% ^ NOTE! April 4 hack for April 15 deadline - if any of these are missing from your TOC and there should be entries there, see lines 1435-1447 of the class file for an example. You need to wrap the appropriate function call adding a call to addcontentsline
+
+
+
+
+
+ 
+
+ 
+% call an abbreviation using \ac{abbrev}
+
+% symbols and acronyms only show up when used in the text
+% \symbols{
+%     \acro{J}{Moment of Inertia}
+% }       
+
+% if you want acronym (simpler) then change these to show
+% hiding this usinbg hide instead of show removed the first emtpy list of abbreviation page, but to show the list of abbreviation you need to use showglossarieslistofabbreviations so it will be listed as part of glossariies
+
+
+\hidelistofabbreviations
+% I changed this from show to hide this and also the showglossarieslistofsymbols  to hide and that indeed hid the list of symbol page
+\hidelistofsymbols
+
+% if you want glossaries (more powerful) then leave above as hide
+% GLOSSARIES package options - automatically turns off front pages from acronym package
+
+% acronymns and symbols are basically the same, but there are two provided 
+% locations where they can show up
+
+% these three were not hidden original. I hid them (all three below)
+%\setabbreviationstyle[acronym]{long-short}
+%\setabbreviationstyle[abbreviation]{long-short}
+\makeglossaries
+
+
+
+% you can hide/show the glossaries page
+
+
+\hideglossarieslistofabbreviations
+\hideglossarieslistofsymbols
+\showglossariesglossaryofterms
+
+
+
+
+\newglossaryentry{AI}{name=AI, description={Artificial Intelligence}}
+\newglossaryentry{ANN}{name=ANN, description={Artificial Neural Network}}
+\newglossaryentry{API}{name=API, description={Application Programming Interface}}
+\newglossaryentry{BiLSTM}{name=BiLSTM, description={Bidirectional Long Short-Term Memory  Network}}
+\newglossaryentry{BPE}{name=BPE, description={Byte Pair Encoding}}
+\newglossaryentry{CPU}{name=CPU, description={Central Processing Unit}}
+\newglossaryentry{CRF}{name=CRF, description={Conditional Random Field}}
+\newglossaryentry{DAG}{name=DAG, description={Directed Acyclic Graph}}
+\newglossaryentry{GAT}{name=GAT, description={Graph Attention Networks}}
+\newglossaryentry{GCNN}{name=GCNN, description={Graph Convolutional Neural Network}}
+\newglossaryentry{GNN}{name=GNN, description={Graph Neural Network}}
+\newglossaryentry{GPT}{name=GPT, description={Generative Pre-trained Transformer}}
+\newglossaryentry{GPU}{name=GPU, description={Graphical Processing Unit}}
+\newglossaryentry{HMM}{name=HMM, description={Hidden Markov Model}}
+\newglossaryentry{IE}{name=IE, description={Information Extraction}}
+\newglossaryentry{IRI}{name=IRI, description={Internationalized Resource Identifier}}
+\newglossaryentry{JSON}{name=JSON, description={JavaScript Object Notation}}
+\newglossaryentry{KG}{name=KG, description={Knowledge Graph}}
+\newglossaryentry{LLM}{name=LLM, description={Large Language Model}}
+\newglossaryentry{LSTM}{name=LSTM, description={Long Short-Term Memory}}
+\newglossaryentry{MEMM}{name=MEMM, description={Maximum Entropy Markov Model}}
+\newglossaryentry{ML}{name=ML, description={Machine Learning}}
+\newglossaryentry{NER}{name=NER, description={Named Entity Recognition}}
+\newglossaryentry{NLP}{name=NLP, description={Natural Language Processing}}
+\newglossaryentry{OWL}{name=OWL, description={Web Ontology Language}}
+\newglossaryentry{RAM}{name=RAM, description={Random Access Memory}}
+\newglossaryentry{RDF}{name=RDF, description={Resource Description Framework}}
+\newglossaryentry{RE}{name=RE, description={Relationship Extraction}}
+\newglossaryentry{SHAP}{name=SHAP, description={SHapley Additive exPlanations}}
+\newglossaryentry{SPARQL}{name=SPARQL, description={SPARQL Protocol and RDF Query Language}}
+\newglossaryentry{SVM}{name=SVM, description={Support Vector Machine}}
+\newglossaryentry{TN}{name=TN, description={True Negative}}
+\newglossaryentry{TP}{name=TP, description={True Positive}}
+\newglossaryentry{UBB}{name=UBB, description={User-Based Batching}}
+\newglossaryentry{UBS}{name=UBS, description={User-Based Sequencing}}
+\newglossaryentry{URI}{name=URI, description={Uniform Resource Identifier}}
+\newglossaryentry{VRAM}{name=VRAM, description={Video Random Access Memory}}
+\newglossaryentry{W3C}{name=W3C, description={World Wide Web Consortium}}
+\newglossaryentry{XML}{name=XML, description={eXtensible Markup Language}}
+
+\abstract{
+% 200 to 350 wordslong (1 page)
+\lipsum[1]
+}
