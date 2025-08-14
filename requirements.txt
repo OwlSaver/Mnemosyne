@@ -1,0 +1,8 @@
+python-docx
+neo4j
+python-dotenv
+pylint
+pyvis
+wordcloud
+black[jupyter]
+langextract[openai]
