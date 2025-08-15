@@ -6,3 +6,5 @@ pyvis
 wordcloud
 black[jupyter]
 langextract[openai]
+notebook
+pandas
