@@ -2,7 +2,8 @@
 % Due by November 1, 2025 Includes entire Praxis
 % 3 to 5 pages
 \section{Conclusion}
-\lipsum[1]
+
+Failures - it takes too long to run, it will take many more cycles to form a rich semantic hierarchy, maybe hundreds or thousands of cycles, the KG did not have entity properties even though the LLM was asked to create them.
 
 \section{Contribution to the Body of Knowledge}
 \lipsum[1]
@@ -16,5 +17,7 @@ Build the response processing agent
 Build the ability to validate documents
 Prepossessing the copra to identify initial Node Labels and Relationship Types
 DO not clear the LTM for each run, processing the same document multiple times just serves as reinforcement
-
-\lipsum[1] 
+Try a very large number of cycles - 1,000 or more
+Make all parts run asynchronously with blocking
+For each entity you find in the source, attach it to an entity in LTM, start with Thing. How do we do this efficiently in a bounded number of steps? Maybe start at the root, Thing, and head up the tree picking the most likely for up to n levels.
+Stop refinement that flips back and forth.
