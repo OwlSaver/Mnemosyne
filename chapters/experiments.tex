@@ -1,0 +1,698 @@
+\section{Analysis of Incompleteness}
+\subsection*{Poorly Connected Instance Nodes}
+This query finds instance nodes with one or zero semantic relationships (i.e., relationships other than IS\_A or FROM), which may indicate concepts that are mentioned but not well-integrated.
+
+\begin{longtable}{p{0.45\textwidth} p{0.45\textwidth}}
+\toprule
+\textbf{Entity} & \textbf{NumberOfDanglingNodes} \\
+\midrule
+\endfirsthead
+\endhead
+Authority & 9 \\
+Exhibit A & 9 \\
+Owner & 7 \\
+Conewago Township & 6 \\
+Sewer System & 6 \\
+York County Prison & 6 \\
+Authority Engineer & 5 \\
+Contractor & 5 \\
+Lateral & 5 \\
+Magisterial District Judge & 5 \\
+Sanitary Sewer System & 5 \\
+Building Sewer & 4 \\
+Conewago Township Sewer Authority & 4 \\
+Connection Permit & 4 \\
+EDU & 4 \\
+Exhibit "A" & 4 \\
+Pennsylvania & 4 \\
+Res. No. 1993-4 & 4 \\
+Service Lateral & 4 \\
+The Authority & 4 \\
+Township & 4 \\
+Vice Chairman & 4 \\
+Assistant Secretary & 3 \\
+Authority's Engineer & 3 \\
+Authority's Inspector & 3 \\
+Chairman & 3 \\
+Chapter 150 & 3 \\
+Engineer & 3 \\
+Escrow & 3 \\
+Manhole & 3 \\
+Record Drawings & 3 \\
+Sewage Treatment Plant & 3 \\
+Solicitor & 3 \\
+This Chapter & 3 \\
+§ 115-7 & 3 \\
+§ 150-2 & 3 \\
+§ 150-38 & 3 \\
+15 Pa.C.S.A. § 1322 (Pocket Part 1986) & 2 \\
+53 Pa.C.S.A. § 5601 et seq. & 2 \\
+AASHTO No. 8 & 2 \\
+AASHTO No. 8 Coarse Aggregate & 2 \\
+Accountant & 2 \\
+Act 428 Of 1968 & 2 \\
+Act Of July 20, 1968, P.L. 459, No. 216, 15 Pa.C.S.A. § 1322 (Pocket Part 1986) & 2 \\
+Applicant & 2 \\
+Application & 2 \\
+Articles Of Incorporation & 2 \\
+Bennett Run Project & 2 \\
+Billing Clerk & 2 \\
+Biochemical Oxygen Demand (BOD) & 2 \\
+Bond Counsel & 2 \\
+Bylaws & 2 \\
+Chapter 150, Sewer Rules And Regulations & 2 \\
+Conewago Code & 2 \\
+Conewago Township Sewer System & 2 \\
+Construction Manager & 2 \\
+Court & 2 \\
+DEP & 2 \\
+Dam Safety And Waterway Management & 2 \\
+Declaration Of Taking & 2 \\
+Deeds Of Dedication & 2 \\
+District Justice & 2 \\
+Dover Treatment Plant & 2 \\
+Dwelling Unit & 2 \\
+Easement & 2 \\
+Employee & 2 \\
+Equivalent Dwelling Unit & 2 \\
+Exhibit "C" & 2 \\
+Exhibit A23 & 2 \\
+Grinder Stations & 2 \\
+Industrial Waste Discharge Permit & 2 \\
+Inspection Escrow & 2 \\
+Lateral Connection & 2 \\
+Pennsylvania Infrastructure Investment Authority & 2 \\
+Permit & 2 \\
+Permits & 2 \\
+Person & 2 \\
+Property Owner & 2 \\
+Property Plats & 2 \\
+Qualified Person & 2 \\
+Recording Secretary & 2 \\
+Remedial Program & 2 \\
+Res. No. 1993-3 & 2 \\
+Res. No. 2009-1 & 2 \\
+Res. No. 2020-2 & 2 \\
+Res. No. 2022-1 & 2 \\
+Reserve Capacity Agreement & 2 \\
+Resident Inspector & 2 \\
+Resolution & 2 \\
+School District & 2 \\
+Secretary & 2 \\
+Service Connection & 2 \\
+Sewage Treatment System & 2 \\
+Sewer Lateral & 2 \\
+Sewer Main & 2 \\
+Subsection B(5)(g)[1][a] & 2 \\
+Tapping Fee & 2 \\
+Township Plumbing Code & 2 \\
+Warranty Period & 2 \\
+Wastewater System & 2 \\
+Wetlands & 2 \\
+Written Warning & 2 \\
+Y-Fitting & 2 \\
+§ 115-2 & 2 \\
+§ 115-3 & 2 \\
+§ 121-2 & 2 \\
+§ 126-1 & 2 \\
+§ 132-10 & 2 \\
+§ 132-11 & 2 \\
+§ 132-5 & 2 \\
+§ 132-6 & 2 \\
+§ 150-16 & 2 \\
+§ 150-17 & 2 \\
+§ 150-20 & 2 \\
+§ 150-22 & 2 \\
+§ 150-27 & 2 \\
+§ 150-3 & 2 \\
+§ 150-30 & 2 \\
+§ 150-37 & 2 \\
+§ 150-43 & 2 \\
+§ 162-1 & 2 \\
+§ 162-2 & 2 \\
+§ 175-1 & 2 \\
+§ 175-12 & 2 \\
+§ 175-16 & 2 \\
+§ 175-9 & 2 \\
+§ 188-3 & 2 \\
+§ 71-1 & 2 \\
+§ 71-3 & 2 \\
+§ 71-4 & 2 \\
+§ 99-1 & 2 \\
+\$1,500 & 1 \\
+10-25-2022 & 1 \\
+1990 Promissory Note & 1 \\
+2-23-2010 & 1 \\
+2002 Promissory Note & 1 \\
+33 U.S.C. § 1344 & 1 \\
+404 Permit & 1 \\
+53 P.S. § 10101 Et Seq. & 1 \\
+53 Pa.C.S.A § 1381 Et Seq. & 1 \\
+53 Pa.C.S.A. § 5601 Et Seq. & 1 \\
+65 Pa.C.S.A. § 701 Et Seq. & 1 \\
+ASTM 74 & 1 \\
+Act 203 & 1 \\
+Act 203 Of 1990 Legislation & 1 \\
+Act 537 Sewerage Facilities Plan & 1 \\
+Action In Assumpsit & 1 \\
+Administrative Fee & 1 \\
+Alley & 1 \\
+Annual Charge For Allocated Capacity & 1 \\
+Annual Reservation Fee & 1 \\
+Apparatus & 1 \\
+Appendix A210 & 1 \\
+Appendix A230 & 1 \\
+Applicant's Contractor & 1 \\
+Applicant's System & 1 \\
+April 15, 2000 & 1 \\
+April 30, 1993 & 1 \\
+Article I & 1 \\
+Article III & 1 \\
+Article IV & 1 \\
+Assistant Treasurer & 1 \\
+Attorney's Fees & 1 \\
+Auditor & 1 \\
+August 1, 1993 & 1 \\
+Authority Facilities & 1 \\
+Authority Member & 1 \\
+Authority's \$600,000 Guaranteed Sewer Project Note - Series of 2000 & 1 \\
+Authority's Procedures & 1 \\
+Authority's Representative & 1 \\
+Authority's Representatives & 1 \\
+Authority's Rules And Regulations & 1 \\
+Authority's Technical Specifications Covering Sanitary Sewers Installed By Developers & 1 \\
+Bank Account & 1 \\
+Bank Statements & 1 \\
+Billing And Accounts Payable Records & 1 \\
+Blasting Bonds & 1 \\
+Board & 1 \\
+Board Member & 1 \\
+Board of the Authority & 1 \\
+Building Sewers & 1 \\
+CTSA & 1 \\
+CTSA Engineer & 1 \\
+CTSA Sewage Treatment Facility & 1 \\
+CTSA Staff & 1 \\
+Car Wash & 1 \\
+Certificate Of Satisfactory Construction & 1 \\
+Cesspool & 1 \\
+Chapter 162 & 1 \\
+Chapter 175 & 1 \\
+Chapter 94 Report & 1 \\
+Checklist For Development Plans & 1 \\
+Civil Action & 1 \\
+Cleanouts & 1 \\
+Commonwealth of Pennsylvania & 1 \\
+Commonwealth-Chartered Lending Institution & 1 \\
+Complainant & 1 \\
+Complaint & 1 \\
+Condemnee & 1 \\
+Conewago Township Ordinances & 1 \\
+Conewago Township Sewer Authority Board & 1 \\
+Conewago Township Sewer Authority's Resolution 1992-2 & 1 \\
+Conewego Code & 1 \\
+Connection And Tapping Fees & 1 \\
+Connection Charge & 1 \\
+Construction Escrow Agreement & 1 \\
+Construction Plans & 1 \\
+Consulting Engineer & 1 \\
+County Soil Survey & 1 \\
+Court Costs & 1 \\
+Ctsa & 1 \\
+Curbline & 1 \\
+Dep & 1 \\
+Department of Environmental Protection Municipal Wasteload Management Regulations & 1 \\
+Developer & 1 \\
+Double Bend & 1 \\
+Dover Township Wastewater Treatment Plant & 1 \\
+Eminent Domain Proceeding & 1 \\
+Employee Insurance Records & 1 \\
+Employee Of The Authority & 1 \\
+Employment Decision & 1 \\
+Equivalent Dwelling Unit (EDU) & 1 \\
+Escrow Account & 1 \\
+Escrow Deposit & 1 \\
+Escrow Records & 1 \\
+Executive Review & 1 \\
+Exhibit & 1 \\
+Exhibit "B" & 1 \\
+Exhibit A, Application To Construct Sewerage Facilities & 1 \\
+Exhibit A, Landlord Responsibility Acknowledgement Form & 1 \\
+Exhibit A.8 & 1 \\
+Exhibit A21 & 1 \\
+Exhibit C & 1 \\
+Exhibit24 & 1 \\
+F-T, LLLP & 1 \\
+Feasibility Study & 1 \\
+February 1, 1996 & 1 \\
+Federal Occupational Safety And Health Administration & 1 \\
+Federal Occupational Safety And Health Administration Regulations & 1 \\
+Federally-Chartered Lending Institution & 1 \\
+Fernco™ & 1 \\
+Ferrule & 1 \\
+Final Plans & 1 \\
+Final Subdivision Plans & 1 \\
+Financial Records & 1 \\
+Financial Security & 1 \\
+Fresh Air Vent & 1 \\
+Fueling Facility & 1 \\
+Garage & 1 \\
+Governing Body Of The Municipality & 1 \\
+Gravity Sewer System & 1 \\
+Grease Interceptor Detail & 1 \\
+Grease Trap & 1 \\
+Grinder Pump Basin & 1 \\
+Highway Occupancy Permit & 1 \\
+Improved Property & 1 \\
+Independent Counsel For The Authority & 1 \\
+Industrial Waste Discharge Agreement & 1 \\
+Industrial Wastes & 1 \\
+Infiltration And Detection & 1 \\
+Inspection Fee & 1 \\
+Inspector & 1 \\
+Installation Cost & 1 \\
+Interceptor & 1 \\
+Investment Advisor & 1 \\
+Irrevocable Letters Of Credit & 1 \\
+July 1, 2005 & 1 \\
+July 31, 1993 & 1 \\
+Lane & 1 \\
+Leaks & 1 \\
+Legal Descriptions & 1 \\
+Lending Institution & 1 \\
+Letter Of Approval & 1 \\
+Letter Report & 1 \\
+List Of Contractors & 1 \\
+List Of Material Suppliers & 1 \\
+List Of Subcontractors & 1 \\
+Loan Agreement & 1 \\
+Magnetic Polyethylene Tape & 1 \\
+Manhole Inspection & 1 \\
+Manual Of The Conewago Township Sewer Authority & 1 \\
+March 28, 2019 & 1 \\
+Material Compliance Certifications & 1 \\
+Material Samples & 1 \\
+May 1, 1993 & 1 \\
+Monthly Billing Calculation & 1 \\
+Municipal Claim Or Lien & 1 \\
+Municipal Lien & 1 \\
+Municipal Permits & 1 \\
+Municipal Records Manual & 1 \\
+Mushroom Vent & 1 \\
+NPDES Permit & 1 \\
+National Wetland Inventory Map & 1 \\
+Natural Resources Conservation Service & 1 \\
+Offices Of The Conewago Township Sewer Authority & 1 \\
+Oil Interceptor Detail & 1 \\
+Oil Separator & 1 \\
+Original Resolution & 1 \\
+PENNVEST & 1 \\
+PLGIT Records & 1 \\
+Partial Release Estimate & 1 \\
+Pennsylvania Dep & 1 \\
+Pennsylvania Department Of Environmental Protection & 1 \\
+Pennsylvania Department Of Transportation & 1 \\
+Pennsylvania Department Of Transportation Regulations & 1 \\
+Pennsylvania Law & 1 \\
+Pennsylvania Municipal Records Act & 1 \\
+Pennsylvania Municipalities Authorities Act & 1 \\
+Pennsylvania's Sunshine Act & 1 \\
+Pennvest Records & 1 \\
+Permanent Flow Meter & 1 \\
+Permit And Inspection Fees & 1 \\
+Permit(s) & 1 \\
+Pipe Trench & 1 \\
+Policy & 1 \\
+Portable Flow Meter & 1 \\
+Preconstruction Meeting & 1 \\
+Preliminary Plan & 1 \\
+Preliminary Plans & 1 \\
+Privy Vault & 1 \\
+Procedure & 1 \\
+Project & 1 \\
+Project Estimate & 1 \\
+Property & 1 \\
+Proposed Project & 1 \\
+Public Sewer & 1 \\
+Public Square & 1 \\
+Punch List Items & 1 \\
+Qualified Professional & 1 \\
+Reimbursement Agreement & 1 \\
+Res. No. 1991-1 & 1 \\
+Res. No. 1991-2 & 1 \\
+Res. No. 1993-1 & 1 \\
+Res. No. 1993-2 & 1 \\
+Res. No. 1993-6 & 1 \\
+Res. No. 1998-3 & 1 \\
+Res. No. 1999-1 & 1 \\
+Res. No. 2000-1 & 1 \\
+Res. No. 2002-2 & 1 \\
+Res. No. 2004-1 & 1 \\
+Res. No. 2004-2 & 1 \\
+Res. No. 2005-1 & 1 \\
+Res. No. 2007-2 & 1 \\
+Res. No. 2010-1 & 1 \\
+Res. No. 2016-1 & 1 \\
+Res. No. 2017-2 & 1 \\
+Res. No. 2020-1 & 1 \\
+Res. No. 2023-1 & 1 \\
+Res. No. 2024-1 & 1 \\
+Reserve Capacity Charges & 1 \\
+Reserve Capacity Fee & 1 \\
+Resolution No. 1992-1 & 1 \\
+Resolutions & 1 \\
+Restrictive Account & 1 \\
+Right-Of-Way Agreement & 1 \\
+Rights-Of-Way & 1 \\
+Riser & 1 \\
+Road & 1 \\
+Road Right-Of-Way & 1 \\
+School Building & 1 \\
+School Property & 1 \\
+Screw-Type Ferrule & 1 \\
+Seal Of The Authority & 1 \\
+Secretary-Treasurer & 1 \\
+Section 1 & 1 \\
+Section 150-29 & 1 \\
+Separator & 1 \\
+Septic Tank & 1 \\
+Sewage Connection Permit & 1 \\
+Sewage Treatment & 1 \\
+Sewer & 1 \\
+Sewer Extension Agreement & 1 \\
+Sewer Extension Reimbursement Agreement & 1 \\
+Sewer Right-Of-Way & 1 \\
+Sewer Right-Of-Way Line & 1 \\
+Sewer Rules And Regulations & 1 \\
+Sewerage Facilities & 1 \\
+Sewerage Project & 1 \\
+Sexual Harassment Policy & 1 \\
+Sinkhole & 1 \\
+Sketch Plan & 1 \\
+Sludge Contract Records & 1 \\
+State Route 0921 & 1 \\
+Stephen P. Linebaugh & 1 \\
+Subsection D & 1 \\
+Subsequent Amendments & 1 \\
+Surfactant & 1 \\
+Tapping Agreement & 1 \\
+Technical Specifications Covering Sanitary Sewers Installed By Developers & 1 \\
+Termination & 1 \\
+The Act & 1 \\
+The Township & 1 \\
+Township Road Occupancy Regulations & 1 \\
+Trap & 1 \\
+Treasurer & 1 \\
+Trench & 1 \\
+U.S. Fish And Wildlife Service & 1 \\
+Vacant Lot Sewer Reservation Agreement & 1 \\
+Vehicle Repair Facility & 1 \\
+Video Inspection & 1 \\
+Violator & 1 \\
+Waiver Of Liens & 1 \\
+Warranty Phase & 1 \\
+Water Company & 1 \\
+Water Meter & 1 \\
+Water Obstruction Permit & 1 \\
+Water Quality Management Permit & 1 \\
+Water Quality Management Permit Application & 1 \\
+Water Shutoff & 1 \\
+Y-Connection & 1 \\
+York Concrete Products & 1 \\
+York County & 1 \\
+York Water Company & 1 \\
+§ 115-1 & 1 \\
+§ 115-4 & 1 \\
+§ 115-5 & 1 \\
+§ 115-6 & 1 \\
+§ 115-8 & 1 \\
+§ 121-3 & 1 \\
+§ 121-4 & 1 \\
+§ 132-1 & 1 \\
+§ 132-2 & 1 \\
+§ 132-3 & 1 \\
+§ 132-4 & 1 \\
+§ 132-7 & 1 \\
+§ 132-8 & 1 \\
+§ 132-9 & 1 \\
+§ 144-1 & 1 \\
+§ 144-2 & 1 \\
+§ 144-3 & 1 \\
+§ 150-1 & 1 \\
+§ 150-10 & 1 \\
+§ 150-12 & 1 \\
+§ 150-13 & 1 \\
+§ 150-14 & 1 \\
+§ 150-15 & 1 \\
+§ 150-18 & 1 \\
+§ 150-23 & 1 \\
+§ 150-24 & 1 \\
+§ 150-25 & 1 \\
+§ 150-26 & 1 \\
+§ 150-28 & 1 \\
+§ 150-29 & 1 \\
+§ 150-32 & 1 \\
+§ 150-33 & 1 \\
+§ 150-34 & 1 \\
+§ 150-36 & 1 \\
+§ 150-4 & 1 \\
+§ 150-40 & 1 \\
+§ 150-41 & 1 \\
+§ 150-42 & 1 \\
+§ 150-5 & 1 \\
+§ 150-6 & 1 \\
+§ 150-7 & 1 \\
+§ 150-8 & 1 \\
+§ 175-10 & 1 \\
+§ 175-11 & 1 \\
+§ 175-13 & 1 \\
+§ 175-15 & 1 \\
+§ 175-2 & 1 \\
+§ 188-1 & 1 \\
+§ 188-2 & 1 \\
+§ 188-4 & 1 \\
+§ 20-5 & 1 \\
+§ 34-5 & 1 \\
+§ 46-10 & 1 \\
+§ 46-8 & 1 \\
+§ 71-2 & 1 \\
+§ 71-5 & 1 \\
+§ 82-3 & 1 \\
+§ 82-4 & 1 \\
+§ 99-3 & 1 \\
+§ 99-4 & 1 \\
+§ DL-1 & 1 \\
+\bottomrule
+\end{longtable}
+\subsubsection*{Interpretation}
+A value of 1 means there is a single, unique entity with this name that is poorly connected. A value greater than 1 indicates multiple, unmerged instances of the same conceptual entity, all of which are poorly connected, highlighting both incompleteness and potential inconsistency.
+\clearpage
+\subsection*{Regulations Missing 'APPLIES\_TO' Relationship}
+This query identifies 'Regulation' instances that are not linked to anything via an 'APPLIES\_TO' relationship, suggesting an incomplete definition.
+
+\begin{longtable}{p{0.45\textwidth} p{0.45\textwidth}}
+\toprule
+\textbf{Concept} & \textbf{Occurrences} \\
+\midrule
+\endfirsthead
+\endhead
+Chapter 105 & 2 \\
+Chapter 150, Sewer Rules And Regulations & 2 \\
+Rules And Regulations & 2 \\
+Sewer Rules And Regulations & 2 \\
+Dam Safety And Waterway Management & 1 \\
+Department of Environmental Protection Municipal Wasteload Management Regulations & 1 \\
+Federal Occupational Safety And Health Administration Regulations & 1 \\
+Pennsylvania Department Of Transportation Regulations & 1 \\
+Township Road Occupancy Regulations & 1 \\
+§ 60-1 & 1 \\
+\bottomrule
+\end{longtable}
+\subsubsection*{Interpretation}
+The 'Occurrences' column shows how many times a specific, incompletely defined concept appears. A high number for a particular concept signals a recurring issue of ambiguity or incompleteness in the source document.
+\clearpage
+\section{Analysis of Inconsistency}
+\subsection*{Ambiguous Terms (Inconsistent Types)}
+This query finds terms that have been assigned multiple different types, indicating ambiguity in the source text or extraction errors.
+
+\begin{longtable}{p{0.3\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
+\toprule
+\textbf{AmbiguousEntity} & \textbf{Occurrences} & \textbf{Types} \\
+\midrule
+\endfirsthead
+\endhead
+Conewago Township Sewer Authority & 30 & Organization, GovernmentAuthority, GoverningBody, Government Authority, Government Agency, Authority \\
+Authority & 22 & Organization, Board, Term, GovernmentAuthority, GoverningBody, Party \\
+Conewago Township & 12 & Municipality, Township, Jurisdiction \\
+Building Sewer & 10 & InfrastructureComponent, Pipe, Term, BuildingSewer \\
+Exhibit A & 10 & LegalDocument, Exhibit \\
+Sewer System & 9 & InfrastructureComponent, Component, System, Infrastructure \\
+The Authority & 8 & Organization, GoverningBody \\
+Conewago Township Sewer System & 7 & InfrastructureComponent, System, Sewer System, Infrastructure, UtilitySystem \\
+Lateral & 7 & InfrastructureComponent, Sewer Component, Pipe, Term, Component, Lateral \\
+Owner & 7 & Person, Term \\
+Improved Property & 6 & Term, Property \\
+Pennsylvania & 6 & State, GoverningBody \\
+Township & 6 & Municipality, Jurisdiction \\
+York County Prison & 6 & Prison, Facility \\
+Authority Engineer & 5 & Person, Role, Engineer \\
+Developer & 5 & Person, Role, Party, Position \\
+Escrow & 5 & FinancialAccount, FinancialInstrument \\
+Magisterial District Judge & 5 & Judge, Official, JudicialOfficer \\
+Sanitary Sewer System & 5 & InfrastructureComponent, System, Infrastructure \\
+Applicant & 4 & Person, Role \\
+Authority's Inspector & 4 & Person, Inspector \\
+Business Corporations Law & 4 & Statute, Law \\
+CTSA & 4 & Organization, Board, GoverningBody, Authority \\
+Conewago Township Sewer Authority Board & 4 & Organization, Board, GovernmentAuthority \\
+Engineer & 4 & Person, Official, Position \\
+Financial Security & 4 & FinancialInstrument, Security \\
+Pennsylvania Department Of Environmental Protection & 4 & Organization, GoverningBody \\
+Service Lateral & 4 & InfrastructureComponent, Pipe \\
+Sewer & 4 & InfrastructureComponent, Pipe, Sewer \\
+Solicitor & 4 & Person, Official, Position \\
+Vice Chairman & 4 & Role, Officer, Position \\
+Assistant Secretary & 3 & Officer, Position \\
+Chairman & 3 & Official, Role, Officer \\
+Declaration Of Taking & 3 & LegalFiling, Legal Document \\
+Easement & 3 & PropertyRight, Property Right \\
+Equivalent Dwelling Unit & 3 & Unit, UnitOfMeasurement \\
+Manhole & 3 & InfrastructureComponent, Infrastructure \\
+Pennsylvania Infrastructure Investment Authority & 3 & Organization, GovernmentAuthority, GoverningBody \\
+Permit & 3 & Permit, LegalDocument \\
+Record Drawings & 3 & Specifications, Drawing, LegalDocument \\
+Resolution & 3 & Resolution, Document \\
+Sewage Treatment Plant & 3 & InfrastructureComponent, Facility, Plant \\
+Sewer Rules And Regulations & 3 & Regulation, Law \\
+This Chapter & 3 & Chapter, LegalDocument, DocumentSection \\
+53 Pa.C.S.A. § 5601 et seq. & 2 & Statute, DocumentSection \\
+AASHTO No. 8 & 2 & MaterialStandard, Material \\
+Accountant & 2 & Person, Position \\
+Act Of July 20, 1968, P.L. 459, No. 216, 15 Pa.C.S.A. § 1322 (Pocket Part 1986) & 2 & Statute, DocumentSection \\
+Applicant's Contractor & 2 & Person, Contractor \\
+Application & 2 & LegalDocument, Application \\
+Article I & 2 & Chapter, DocumentArticle \\
+Auditor & 2 & Official, Advisor \\
+Billing Clerk & 2 & Person, Official \\
+Biochemical Oxygen Demand (BOD) & 2 & UnitOfMeasurement, ChemicalProperty \\
+Bond Counsel & 2 & Position, Advisor \\
+Bylaws & 2 & LegalDocument, Law \\
+CTSA Staff & 2 & GoverningBody, Position \\
+Chapter 175 & 2 & Chapter, DocumentChapter \\
+Conewago Township Sewer Authority Rules And Regulations & 2 & Manual, LegalDocument \\
+Consulting Engineer & 2 & Engineer, Position \\
+Court & 2 & Roadway, Court \\
+Dam Safety And Waterway Management & 2 & Regulation, RegulationTitle \\
+Deeds Of Dedication & 2 & LegalDocument, Deed \\
+District Justice & 2 & Judge, Position \\
+Dover Treatment Plant & 2 & Facility, Treatment Plant \\
+Dwelling Unit & 2 & UnitOfMeasurement, DwellingUnit \\
+Employee & 2 & Person, Position \\
+Final Plans & 2 & LegalDocument, Plan \\
+Industrial Wastes & 2 & Waste, Term \\
+Inspection Escrow & 2 & FinancialAccount, FinancialInstrument \\
+Investment Advisor & 2 & Role, Advisor \\
+Lateral Connection & 2 & Connection, Infrastructure \\
+Manual Of The Conewago Township Sewer Authority & 2 & Manual, LegalDocument \\
+Municipality & 2 & Municipality, GoverningBody \\
+PENNVEST & 2 & Organization, GovernmentAuthority \\
+Pennsylvania Department Of Transportation & 2 & GoverningBody, GovernmentAgency \\
+Permits & 2 & Permit, Record \\
+Person & 2 & Term, Entity \\
+Preliminary Plans & 2 & LegalDocument, Plan \\
+Property Plats & 2 & LegalDocument, Plat \\
+Recording Secretary & 2 & Official, Position \\
+Riser & 2 & InfrastructureComponent, Component \\
+School District & 2 & Organization, District \\
+Secretary & 2 & Officer, Position \\
+Service Connection & 2 & Sewer Component, ServiceConnection \\
+Sewage Treatment System & 2 & Facility, System \\
+Sewer Authority & 2 & GoverningBody, Government Agency \\
+Sewer Authority Solicitor & 2 & Official, Advisor \\
+Sewer Lateral & 2 & InfrastructureComponent, Pipe \\
+Sewer Main & 2 & InfrastructureComponent, Pipe \\
+Sewerage Facilities & 2 & Facility, Infrastructure \\
+Township Plumbing Code & 2 & LegalDocument, Code \\
+Trap & 2 & InfrastructureComponent, Component \\
+Warning Tape & 2 & InfrastructureComponent, Component \\
+Water Quality Management Permit Application & 2 & Application, Permit Application \\
+Y-Fitting & 2 & InfrastructureComponent, Fitting \\
+§ 20-6 & 2 & Law, Code \\
+§ 20-9 & 2 & DocumentSection, Law \\
+§ 46-3 & 2 & Chapter, DocumentSection \\
+§ 46-4 & 2 & Statute, DocumentSection \\
+\bottomrule
+\end{longtable}
+\subsubsection*{Interpretation}
+The results show terms creating ambiguity. 'Occurrences' is the number of separate nodes sharing this name with different types. 'Types' lists the different classifications assigned.
+\clearpage
+\subsection*{Circular Type Dependencies}
+This query identifies logical loops in the type hierarchy (e.g., A IS\_A B, B IS\_A A), which represent a structural inconsistency in the ontology.
+
+\begin{longtable}{p{0.45\textwidth} p{0.45\textwidth}}
+\toprule
+\textbf{CircularPath} & \textbf{Occurrences} \\
+\midrule
+\endfirsthead
+\endhead
+Board, GoverningBody, Official, Person, Position & 1500 \\
+Board, Official, Person, Position & 76 \\
+Board, GoverningBody, Official, Person & 22 \\
+Board, GoverningBody, Official, Position & 22 \\
+Board, GoverningBody, Person, Position & 17 \\
+GoverningBody, Official, Person, Position & 17 \\
+Board, GoverningBody, Official & 9 \\
+Board, Person, Position & 7 \\
+Official, Person, Position & 7 \\
+Board, GoverningBody & 5 \\
+Law, LegalDocument & 5 \\
+GoverningBody, Official, Person & 4 \\
+GoverningBody, Official, Position & 4 \\
+Chapter, DocumentSection & 2 \\
+GoverningBody, Official & 2 \\
+Official, Person & 2 \\
+Official, Position & 2 \\
+\bottomrule
+\end{longtable}
+\subsubsection*{Interpretation}
+Any result from this query represents a significant logical inconsistency in the inferred ontology. 'CircularPath' shows the nodes forming the definitional loop.
+\clearpage
+\subsection*{Most Unstable Concepts (High Refinement)}
+This query identifies concepts that required the most refinement cycles (merging, re-typing), indicating they were the most ambiguous or inconsistently represented in the source text.
+
+\begin{longtable}{p{0.3\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
+\toprule
+\textbf{Entity} & \textbf{Occurrences} & \textbf{MaxModifications} \\
+\midrule
+\endfirsthead
+\endhead
+Chapter 20 & 1 & 10 \\
+Municipalities Planning Code & 1 & 9 \\
+Article I & 1 & 7 \\
+§ 46-2 & 2 & 6 \\
+Sewer Authority & 2 & 5 \\
+CTSA & 1 & 5 \\
+Authority & 8 & 4 \\
+CTSA Solicitor & 1 & 4 \\
+Sewer Authority Solicitor & 1 & 4 \\
+Subdivision And Land Development Plan & 1 & 4 \\
+§ 46-3 & 2 & 3 \\
+§ 20-6 & 2 & 3 \\
+§ 20-9 & 2 & 3 \\
+§ 46-4 & 2 & 3 \\
+Investment Advisor & 2 & 3 \\
+Municipality & 1 & 3 \\
+§ 46-1 & 1 & 3 \\
+§ 20-1 & 1 & 3 \\
+Official Of The Authority & 1 & 3 \\
+Res. No. 2021-1 & 1 & 3 \\
+CTSA - Base - Remove.docx & 1 & 3 \\
+§ 1-1 & 1 & 3 \\
+§ 20-7 & 1 & 3 \\
+§ 20-4 & 1 & 3 \\
+§ 34-4 & 1 & 3 \\
+\bottomrule
+\end{longtable}
+\subsubsection*{Interpretation}
+'Occurrences' is the number of nodes with this name that needed modification. 'MaxModifications' is the highest refinement count for any single node of that name, a direct measure of instability.
+\clearpage

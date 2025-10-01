@@ -1,0 +1,67 @@
+\chapter{Experimental Results}
+\section{Overview of Experiments}
+This document details the results of the experimental run conducted on \today.
+The following experiment groups and individual experiments were executed:
+\begin{itemize}
+  \item \textbf{Group: Primary Use Case: Legal Document Analysis}
+  \begin{itemize}
+    \item CTSA Document Processing with GPT-4.1
+  \end{itemize}
+\end{itemize}
+\section{Summary of Results}
+\begin{longtable}{p{0.4\textwidth}rrr}
+\toprule
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\midrule
+\endhead
+CTSA Document Processing with GPT-4.1 & 8.99\% & 17.33\% & 0.64\% \\
+\bottomrule
+\caption{Summary of key performance metrics for each successful experiment.}
+\end{longtable}
+\clearpage
+\section{Primary Use Case: Legal Document Analysis}
+\subsection{CTSA Document Processing with GPT-4.1}
+Performs a full run (extraction, ingestion, and consolidation) on the 82-page CTSA document to generate the final knowledge graph for analysis.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP401EXP001\_input\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP401EXP001\_entity\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP401EXP001\_relationship\_wordcloud.png}
+  \includegraphics[width=0.48\textwidth]{figures/appendix\_fig/GRP401EXP001\_ontology\_graph.png}
+  \caption{Visualizations for CTSA Document Processing with GPT-4.1. Top-left: Input Text. Top-right: Extracted Entities. Bottom-left: Relationship Types. Bottom-right: Type Ontology.}
+\end{figure}
+\clearpage
+\subsubsection{Hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Llm Provider & OpenAI \\
+Llm Model & gpt-4.1 \\
+Temperature & 0.0 \\
+Chunk Size & 20 \\
+Chunk Overlap & 5 \\
+Num Refinement Cycles & 8 \\
+\bottomrule
+\end{tabular}
+
+\subsubsection{Results}
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Status & Success \\
+Duration Seconds & 1262.982354 \\
+Final Nodes & 1299 \\
+Final Relationships & 3125 \\
+Overall Score & 8.99\% \\
+Entity F1 Score & 17.33\% \\
+Relationship F1 Score & 0.64\% \\
+\bottomrule
+\end{tabular}
+% Done.
