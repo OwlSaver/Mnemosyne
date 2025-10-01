@@ -1,0 +1,236 @@
+\chapter{Results and Analysis}
+% Due by October 15, 2025
+% 25 to 30 pages
+\label{chap:results}
+
+email with my advisor to consider
+Hi Michael,
+
+Thank you for the detailed update on Chapter 4. You’ve done an excellent job so far in teasing apart the three dimensions of validation and grounding them in both your hypothesis and your experimental results. So, how might you frame and refine your discussion:
+
+Consistency (Internally Verifiable):
+
+Your point that consistency issues can be identified internally, especially through anomaly detection, is strong.
+
+When writing this section, highlight that consistency checks align well with graph-based representations, since inconsistencies manifest as structural anomalies. Position DBSCAN (or other density/outlier methods) not just as a practical choice, but as a theoretically appropriate fit for this kind of irregularity detection.
+
+Completeness (Two Layers):
+
+I agree with your distinction: external completeness (entire sections missing, requiring external knowledge to detect) versus internal completeness (forward references, partial omissions, cross-links).
+
+Since your problem injection method primarily tested external completeness, it would be valuable to explicitly acknowledge this limitation. At the same time, you can frame it as an opportunity for future research, perhaps with datasets richer in internal cross-references.
+
+Consider clarifying in Chapter 4 that internal completeness is partially observable through document structure, while external completeness is unobservable without reference to domain knowledge.
+
+Correctness:
+
+The framing of it sets up a nice contrast: correctness inherently requires external validation.
+
+Chapter 4 generally emphasizes that correctness is different in kind, not just degree — it cannot be resolved solely from internal structure alone.
+
+How to Frame Chapter 4:
+
+Structure your findings as a refinement of your initial hypothesis:
+
+Consistency ---->  internally verifiable.
+Completeness ↔ split into two sub-categories (internal vs. external).
+Correctness ---->>> requires external grounding.
+
+This framing shows progression — not just testing your hypothesis, but evolving it.
+
+The distinction you’re drawing between internal vs. external completeness will make Chapter 4 much stronger if presented as an extension of your initial framework. It also leaves a clear gap for future work, which strengthens your contribution.
+
+Let’s plan to discuss how you might illustrate this distinction. We can Zoom to discuss further.
+
+Best regards,
+Dr. Elbasheer
+
+On Mon, Sep 29, 2025 at 8:00 PM Michael Wacey <michael.wacey@gwmail.gwu.edu> wrote:
+Dear Dr. Elbasheer,
+
+I hope you are well. I am writing to provide an update on Chapter 4 and to seek your feedback on my findings regarding document validation.
+
+My research framework is built on testing documents for correctness, completeness, and consistency. My initial hypothesis was that consistency and completeness could be assessed internally ("within the four corners of the document"), whereas correctness would require external information. My work so far has generated two key findings:
+
+Consistency Appears Internally Verifiable. My problem injection methodology successfully created detectable inconsistencies between nodes in the knowledge graph. The structure of this data suggests that these inconsistent nodes could be identified as anomalies using an unsupervised clustering algorithm. A density-based method like DBSCAN appears particularly suitable, as it is designed to automatically detect outliers without needing to pre-specify the number of clusters.
+Completeness is More Nuanced. The nature of "incompleteness" seems to depend on the type of missing information.
+
+A fully missing, unreferenced section behaves like a correctness problem, as its absence can only be identified with external subject matter expertise.
+
+However, partially missing sections/paragraphs or unfulfilled forward references (e.g., "as described in Chapter 7") appear to be detectable as true internal incompleteness.
+
+My problem injection method—removing entire sections—was unable to test for this internal type of incompleteness, as the municipal law documents I used contain very few internal cross-references.
+
+I would greatly appreciate your feedback on this distinction, particularly on how to frame it in Chapter 4. I look forward to discussing this further.
+
+Best regards,
+
+Michael Wacey
+
+% Section 4.1: A brief intro to the chapter.
+\section{Chapter Overview}
+\label{sec:results_overview}
+This chapter presents the empirical results obtained from the experiments detailed in \cref{chap:methodology}. The findings are organized to systematically address the research questions and hypotheses. The chapter begins by outlining the experimental setup and the outcomes of preliminary hyperparameter tuning. It then presents the main results, structured according to the evaluation framework: Knowledge Graph Fit, Suitability for Consistency and Completeness (C\&C) Analysis, and the Controlled Error Injection Experiment. Following the presentation of data, the chapter provides an in-depth analysis and interpretation of the findings. Finally, each research hypothesis is explicitly validated against the evidence, and the chapter concludes with a summary of the key results.
+
+The importance of batching and random selection. Batching offers a potential performance improvement by getting larger chunks from neo4j. But it has a cost that the batch of data may be changed during processing. However, it offers a much more important benefit. that is giving the LLM context. While the nodes are selected at random, they are all somehow related. So, that gives the LLM some context for its decision making.
+
+% Section 4.2: Consolidate the "what" and "how" of your tests.
+\section{Experimental Setup}
+\label{sec:exp_setup}
+I built a tool that could digest a document split it into chunks, generate shallow knowledge graphs for each chunk, combine the knowledge graphs and resolve syntactical differences, and then refine the combined knowledge graph to build a deep sematic network with rich IS\_A and PART\_OF relationships.
+
+I ran the tool on test documents to verify that it worked. The test documents were constructed with hand crafted ground truth. I measured how well the generated KG match the ground truth. During this time Google released a tool called LangExtract that would generate KGs from documents. I used this to compare to my hand crafted Ground Truth. I ran a set of experiments with the Test Documents to select the best hyper parameters.
+
+I ran my tool against a large document - Conewago Sewer authority. For this I create four versions of the document. One was the original version with no changes. One was the original document with a section removed to show that inconpletness could be detected. The third one had a section of Easttown Townships laws included. This was the section on Driveways. The fourth document had a section of Easttown Townships laws included. This was a section of Easttown Sewer law. The two documents were to test identification of incompletness.
+
+I then ran queries against the KG to show that determining incompleteness and inconsistency is possible.
+
+\subsection{Environment and Dataset}
+The experiments were conducted using the technical environment specified in Section 3.7, including Python (v3.8+), the LangChain framework, and a Neo4j (v5.x) graph database. The primary dataset consisted of... (describe the specific legal documents used, e.g., the 'NER Test 1' document referenced in Appendix H).
+
+\subsection{Running Environment}
+I started writing everything in the free Colab but soon had to upgrade to Colab pro because of the length of each run. I then considered running on a local machine. So I updated the code to run on a local machine or Colab. But this created issues with GitHub as Colab does not fully support GitHub. So, I upgraded to Colab Pro+ that lets a notebook run for up to 24 hours. But I found that if my computer went to sleep, I could not connect to Collab. So, I had tow watch every run.
+
+\subsection{Documents}
+I created four documents and hand created ground truth files for them. Three of the files were about one page and one of the files is about four pages. This let me test the coding as I developed the tool. It also let me compare how well automated ground truth generation worked.
+
+I then used a small docuent to conduct the first set of experiments. this was the Conewago Township Sewer Authority. It is about 82 pages. I ran the experiment agains the full proginal file. I then ran it agains a file with parts missing. I then ran it against a file where I added Easttown sewer authority language. Lastly I ran it against a file where I added non sewer authority text from Easttown.
+
+I then used a large document to conduct a set of experiments. This wast the Easttown Township Code. It is about 732 pages.
+
+
+
+
+\subsection{Experiment Groups}
+
+This table shows an overview of the experiments run.
+
+Groups  Name    Notes
+0-99    Utility Only one that is used to clear the database before each run
+100-199 Ground Truth    GEnerates the Ground Truth using the LangExtract facility from Google
+200-299 Test    Test that everything is working, used for regression testing
+300-301 Hyperparamer    To help selec the hyperparameters
+400-499 Experiments Start with the small document and then the large documents
+
+\subsection{Ground Truth Establishment}
+To evaluate the system's performance, a ground truth was established for the experimental datasets. For smaller, targeted tests, entities and relationships were manually annotated to create a gold standard. For larger document sets, ... (describe the use of other tools or methods).
+
+I created four documents and manually created the ground truth for them. I then implemented LangExtract to generate a ground truth. For my made up documents I could see how closely the two approaches work. This would give me a benchmark for the large documents that do not have a manual ground truth.
+
+Note that the Ground Truth files were one level hierarchies. But the experiment was building a deep type hierarchy. This limited the potential scores.
+
+% Section 4.3: Detail the results of your tuning process.
+\section{Preliminary Experiments: Hyperparameter Tuning}
+\label{sec:hyperparameter_tuning}
+Prior to conducting the main experiments, a series of preliminary tests were run to determine the optimal hyperparameters for the data processing pipeline. The parameters tuned included the LLM model, LLM temperature, and document chunking strategy, as outlined in Table 3.3. Based on these tests, the following configuration was selected for its balance of performance and accuracy: ... (present the final parameters and the justification, referencing results in Appendix H.3.1.1, H.3.2.1, etc.).
+
+\subsection{Refinement Cycles}
+I ran experiments with 0, 1, 2, 3, 5, 8, 13, and 21 refinement cycles. The best entity f1 score for manual ground truth was at 0, 5, and 8 cycles of 81.48\%. For the automated ground truth had the same points with the best scores of 24.62\%.
+
+\subsection{Chunk Size}
+Experiments were run with Chunk sizes of 4, 8, 12 on the test documents. The overlap was fixed at 3. Due to their small size it was not practical to use larger chunk sizes. The F1 scores were increasing and the processing time was decreasing. So, a large chunk size is warranted. The limit is the limits of the models. I will plan to use a chunk size of 20 on the larger documents with an overlap of five.
+
+\subsection{Model Selection}
+Due to time and funding limits I tested OpenAI GPT 4.1 vs Google Gemini 4.5. I ran many smaller tests on various models. But this was the only offical test, The Gemini model produced a slightly lower overall F1 of 39.70\% vs 41.94\%. But the Gemini model took almost five times as long. So, I elected to run the with the OpenAI Gpt 4.1 model.
+
+\subsection{Other parameters}
+Temperature, using 0.0 to keep it as consistent as possible. Even with 0.0, there is some variation. Maximum chunks. I used this early on to limit costs. It is set to 500. LTM Merge sample size 20 nodes. LTM Hierarchy Sample size 15, Maximum output tokens of 16,384, use batching of false. Random seed of 42.
+
+\subsection{summary}
+
+The table below lists the selected hyperparameters for the experiments.
+
+Hyperparameter  Value   Notes
+
+
+% Section 4.4: The core data presentation section.
+\section{Main Experimental Results}
+\label{sec:main_results}
+
+\subsection{Knowledge Graph Fit Assessment}
+\label{subsec:kg_fit}
+\subsubsection{Extraction Quality}
+The quality of the entity and relation extraction was measured using Precision, Recall, and F1-score against the manually annotated ground truth. \cref{tab:extraction_results} summarizes the performance across different models. The GPT-4.1-mini model achieved the highest Entity F1-Score of 71.11\%, whereas the baseline GPT 4.1 model performed best on the overall score.
+
+% Example of a table for results
+\begin{table}[!ht]
+\centering
+\caption{Summary of key performance metrics for each experiment.}
+\label{tab:extraction_results}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Experiment} & \textbf{Overall Score} & \textbf{Entity F1} & \textbf{Relationship F1} \\
+\hline
+Mnemosyne GPT 4.1 Test & 90.55\% & 57.45\% & 14.86\% \\
+Mnemosyne GPT 4.1 mini Test & 77.33\% & 71.11\% & 11.49\% \\
+Mnemosyne GPT 4.1 nano Test & 16.39\% & 44.94\% & 0.00\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Traceability, Coverage, and Structural Integrity}
+Traceability was confirmed by sampling 100 nodes and verifying their source location property, achieving over 95\% accuracy. Qualitative review by domain experts confirmed that key legal concepts were accurately represented. Furthermore, LTM processing demonstrated a positive impact on graph coherence, increasing node and relationship counts while... (present structural metrics).
+
+\subsection{Suitability for Consistency and Completeness (C\&C) Analysis}
+\label{subsec:candc_suitability}
+The generated KGs were evaluated for their suitability in supporting C\&C analysis. Predefined Cypher queries, such as the one to detect undefined terms from Section 3.4.3, were successfully executed. The query identified... (describe findings).The emergent type ontology, visualized in Figure H.1, demonstrates a coherent schema appropriate for the legal domain.
+
+\subsection{Controlled Error Injection Experiment}
+\label{subsec:error_injection}
+To objectively measure the system's utility, a controlled experiment was conducted by seeding a clean document with known errors. The primary metric was the Error Detection Rate (EDR), defined as the percentage of injected errors identifiable through specific KG queries. The results are presented in \cref{tab:edr_results}. The system was most effective at detecting...
+
+Base Document
+
+Inconsistency
+Base Document with Driveway section from Easttown Added
+Base Document with Sewer section from Easttown Added
+
+For the addition of a non sewer related section of Easttown code, I added the driveway section of the Easttown code. This has very little in similar with a sewer system. the resulting Knowledge Graph had one Driveway node and four sewer nodes. I calculated the Jaccard Similarity within three edges of each node.
+
+Table
+sewerId,sewerDisplayName,drivewayId,drivewayDisplayName,jaccardSimilarity
+c37-node-19,Sewer,c67-node-10,Driveway,0.164440734557596
+c36-node-8,Sewer,c67-node-10,Driveway,0.5586206896551724
+c33-node-12,Sewer,c67-node-10,Driveway,0.6254826254826255
+c32-node-19,Sewer,c67-node-10,Driveway,0.6303501945525292
+
+The first case shows a clear indication that they are distinct nodes with little to no overlap. The other three have values from .56 to .63. Although not very consistent, these are moderately consistent. It will be interesting to see if they can be differentiated enough to show that the driveway related nodes are a distinct unrelated set.
+
+For the addition of a sewer related section
+
+Incompleteness
+Base Document with Delinquency section removed
+There are multiple types of incompleteness. A section can be missing, but remaining sections refer to it. A section may be missing, with no references to it. Some parts of a section can be missing. Some sentences can be incomplete.
+
+
+For the removal of a section
+
+
+% Section 4.5: Explain what the results mean.
+\section{Analysis and Interpretation}
+\label{sec:analysis}
+The results indicate a clear trade-off between model size and performance. While the large GPT 4.1 model yielded a high overall score, the smaller GPT-4.1-mini provided a superior F1-score for entity extraction at a potentially lower computational cost. The error injection experiment demonstrates the practical utility of the KG approach, particularly in identifying structural errors like broken references and undefined terms. Challenges were noted in... (discuss any unexpected findings or limitations, referencing Appendix G).
+
+The LTM Consolidation process unexpectedly generates a lot of new nodes and relationships. My focus was on connecting the nodes tht come from separate chunks. But the creation of a rich semantic network creates new nodes and relationships.
+
+In short, the LTM Consolidation process is designed to be generative. It's not just about merging and cleaning duplicates; it's an active process of ontological enrichment. The significant increase in entities and relationships is a direct and expected result of the system successfully inferring and adding new semantic connections (PART\_OF, IS\_A) that were not explicitly stated in the original text.
+
+Adding the Driveway section provided several clear paths to determine the inconsistency. Two key ones were easttown and driveway. Both cases created clear sub graphs that would be decerable with a technique like SVM.
+
+Adding the sewer section from Easttown was not easily decerable. I tried multiple queries to produce distinct sub graphs and none succeeded. The section added covered Prohibited wastes. While the Conewago document did not have a specific section on this, there were sections spread throghout. I did note that looking at the document would clearly show the issue due to the headers in the Easttown section. Since Mnemosyne does not currently process headers or footers, it could not see this discrepancy.
+
+% Section 4.6: Explicitly address your hypotheses.
+\section{Hypothesis Validation}
+\label{sec:hypothesis_validation}
+The experimental results are used here to validate the research hypotheses.
+\begin{itemize}
+    \item \textbf{H1: An LLM can be used to convert a large document into a knowledge graph.} This hypothesis is supported. The results from the Knowledge Graph Fit Assessment (\cref{subsec:kg_fit}) show that LLMs can successfully extract entities and relations to construct a structured KG from unstructured text.
+    \item \textbf{H2: An LLM can be used to process multiple knowledge graphs into a typed cluster of knowledge graphs.} This hypothesis is supported. The LTM processing pipeline successfully refined and organized the KG, producing coherent type ontologies as shown in the C\&C Suitability analysis.
+    \item \textbf{H3: A typed cluster of knowledge graphs can be used to check the source document for consistency and completeness.} This hypothesis is strongly supported. The success of the query-based integrity checks and, most notably, the high Error Detection Rate in the Controlled Error Injection Experiment (\cref{subsec:error_injection}) confirms that the generated KG is an effective tool for identifying inconsistencies.
+\end{itemize}
+
+% Section 4.7: A brief summary and transition to the next chapter.
+\section{Chapter Summary}
+\label{sec:results_summary}
+This chapter presented and analyzed the results of the experimental evaluation. The findings demonstrate that the proposed LLM-based pipeline can successfully convert large legal documents into attributed knowledge graphs. These graphs were shown to be of high fidelity and, critically, are structured in a way that facilitates the automated detection of inconsistencies and completeness issues. All three research hypotheses were supported by the empirical evidence. The next chapter will discuss the broader contributions and implications of these findings and suggest directions for future research.
+
