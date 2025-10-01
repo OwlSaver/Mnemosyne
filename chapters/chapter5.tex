@@ -1,32 +1,75 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 5: Discussion and Conclusions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Discussion and Conclusions}
-% Due by November 1, 2025 Includes entire Praxis
-% 3 to 5 pages
-\section{Conclusion}
+\label{chap:discussion}
 
-Failures - it takes too long to run, it will take many more cycles to form a rich semantic hierarchy, maybe hundreds or thousands of cycles, the KG did not have entity properties even though the LLM was asked to create them.
+% Final Praxis due by November 1, 2025.
+% This chapter's target length is 3 to 5 pages.
 
-When I started this I had ample evidence that this was needed. I had specific evidence from problems that Easttown township faced due to inconsistencies in laws. I knew from my experience that teams had issues creating large documents that were complete and consistent. Late changes were often not applied accross a document or set of documents.
+This final chapter synthesizes the findings of the research, reflects on the challenges encountered during the development and evaluation of the Mnemosyne system, and situates the work within the broader academic landscape. It begins with a discussion of the project's outcomes, revisiting the initial motivations and interpreting the results in a wider context. The chapter then explicitly delineates the novel contributions this research makes to the body of knowledge. Finally, it concludes by offering recommendations for future research and providing a summary of the dissertation's key takeaways.
 
-I was surprised by how little research was going on in this area. there was a lot of research on small documents. There was a lot of research on summarizing oducuments. But little to none on large documents. Large documents are where the power of computers could come into play.
+\section{Discussion of Findings and Challenges}
+\label{sec:discussion}
 
-I thought and still belive that my approach of layering the processing and working on small randomply selected sections can allow for the processing of large documents. I underestimated how hard this would be. Even LangExtract from Google has toruble with larger documents.
+The initial motivation for this research was grounded in tangible, real-world problems. Observations of inconsistencies within municipal legal codes, such as those faced by Easttown Township, and direct experience with the challenges teams face in maintaining large, internally consistent documents, provided clear evidence of need. Large-scale documentation is precisely where computational methods should offer the most significant advantages, yet a review of the literature revealed a surprising gap. While much research has focused on text summarization or knowledge extraction from smaller documents, the unique challenges of processing and validating large documents remain largely unaddressed.
 
-The approach did show that it could work. It needs custom LLMs defiened for the specific needs. It needs
+This research posited that a layered processing approach, operating on small, randomly selected sections of a document, could enable the incremental construction of a comprehensive knowledge graph for a large corpus. The results presented in \cref{chap:results} demonstrate the fundamental viability of this approach. The system successfully constructed a knowledge graph and, more importantly, demonstrated its utility for identifying seeded inconsistencies. However, the process also revealed significant engineering and theoretical challenges that must be addressed for such a system to become practical.
 
-\section{Contribution to the Body of Knowledge}
+\paragraph{Scalability and Performance.}
+A primary challenge encountered was the computational cost and runtime of the pipeline. The initial design, which relied heavily on LLMs for all refinement tasks, created processing dependencies that hindered parallelization. When interactions within a data batch proved problematic, the process was serialized into single-item operations, resulting in a significant slowdown. A full processing run on a large document like the Easttown Township Code proved to be prohibitively time-consuming. This suggests that a purely LLM-based approach is not scalable at present. Future iterations must incorporate more deterministic, algorithmic processes to complement the generative capabilities of LLMs, thereby improving efficiency.
 
+\paragraph{Depth of Semantic Refinement.}
+The experiments indicated that achieving a richly detailed and stable semantic hierarchy requires a vast number of refinement cycles—potentially in the hundreds or thousands. The limited number of cycles feasible within the project's time constraints only began to scratch the surface of this deep refinement process. This observation reinforces the idea that knowledge consolidation is not a one-pass task but an extended, iterative process of convergence.
+
+\paragraph{Reliability of LLM Outputs.}
+A notable limitation was the LLM's failure to consistently generate entity properties (attributes), even when explicitly instructed to do so in the prompt. This highlights an ongoing challenge in the field of prompt engineering: ensuring reliable, structured output from generative models without imposing rigid output schemas or fine-tuning, which were outside the scope of this project. The development of custom, task-specific LLMs appears necessary to overcome this limitation.
+
+Despite these challenges, the core thesis remains sound. The experiments confirmed that the layered, incremental approach can work. The difficulties encountered were not with the conceptual framework but with the practical implementation using today's generalized LLM technologies.
+
+\section{Contributions to the Body of Knowledge}
+\label{sec:contributions}
+This research makes several novel contributions to the field of automated knowledge extraction and document validation, particularly in the context of large-scale, unstructured documents. While the literature acknowledges the need for such tools, existing approaches are often limited in scope. Typically, they build shallow, single-layer knowledge graphs—generating `(head, relation, tail)` triples directly from text—and perform little to no subsequent refinement of the graph structure.
+
+This dissertation advances the state-of-the-art by developing and demonstrating a system that incorporates the following key advancements:
+\begin{enumerate}
+    \item \textbf{A Multi-Layered Knowledge Graph Architecture:} Unlike traditional flat KGs, this work constructs a foundational knowledge graph and then develops a distinct semantic type hierarchy (`IS\_A` relationships) on top of it. This layered approach provides a richer, more abstract representation of the document's content.
+
+    \item \textbf{Iterative and Generative Refinement:} The system implements multiple, successive refinement cycles to actively improve the KG's structure. This goes beyond simple de-duplication and includes the establishment of `PART\_OF` relationships and the merging of nodes based on both syntactic and deep semantic similarity, a process that enriches the graph's ontology.
+
+    \item \textbf{An Incremental Framework for Large Documents:} The methodology is explicitly designed to handle documents that exceed the context window of modern LLMs. By dividing the document into manageable chunks and incrementally building the KG, the system provides a viable framework for processing corpora of significant size, a domain where even commercial tools like Google's LangExtract have shown limitations.
+\end{enumerate}
+Together, these contributions present a more sophisticated and scalable paradigm for converting large, unstructured texts into structured, verifiable knowledge bases.
 
 \section{Recommendations for Future Research}
+\label{sec:future_research}
+The findings and challenges of this research open several promising avenues for future work. These recommendations are organized into three main categories: architectural improvements, algorithmic enhancements, and the development of community resources.
 
-Run the processes asynchronously
-Create specific LLM for each task
-Build the Query Processing
-Build the response processing agent
-Build the ability to validate documents
-Prepossessing the copra to identify initial Node Labels and Relationship Types
-DO not clear the LTM for each run, processing the same document multiple times just serves as reinforcement
-Try a very large number of cycles - 1,000 or more
-Make all parts run asynchronously with blocking
-For each entity you find in the source, attach it to an entity in LTM, start with Thing. How do we do this efficiently in a bounded number of steps? Maybe start at the root, Thing, and head up the tree picking the most likely for up to n levels.
-Stop refinement that flips back and forth.
-Create a set of documents and associated ground truth knowledge graph. The documents should be about 3,000 pages. There should be variations with specific introduced errors. This would support further research on large documents.
+\paragraph{System Architecture and Performance.}
+The most pressing need is to re-architect the system for performance and scalability. This involves moving from a serial, synchronous pipeline to a fully asynchronous model where different refinement tasks can run in parallel with appropriate blocking mechanisms to ensure data consistency. This would drastically reduce the end-to-end processing time.
+
+\paragraph{Model and Algorithmic Enhancements.}
+Several enhancements could improve the quality and efficiency of the knowledge graph construction process:
+\begin{itemize}
+    \item \textbf{Task-Specific Models:} Instead of relying on a single, general-purpose LLM, future work should focus on creating or fine-tuning smaller, specialized models for each distinct task (e.g., entity extraction, relationship typing, node merging).
+    \item \textbf{Persistent Long-Term Memory (LTM):} The LTM should not be cleared between runs on the same document. Processing a document multiple times should serve as reinforcement, allowing the semantic hierarchy to deepen and stabilize over time.
+    \item \textbf{Advanced Refinement Heuristics:} The system should be enhanced to detect and prevent "refinement flipping," where two nodes or relationships oscillate between states in successive cycles. Furthermore, a more efficient, bounded-step algorithm is needed to attach new entities to the existing `IS\_A` hierarchy, perhaps by traversing the tree from the root (`Thing`) and making probabilistic choices at each level.
+    \item \textbf{Schema Pre-processing:} A preliminary pass over the corpus could be used to identify candidate node labels and relationship types, providing an initial schema to guide the LLM and improve the consistency of the KG extraction.
+\end{itemize}
+
+\paragraph{Expanded System Capabilities.}
+With a robust KG as a foundation, the full vision of the Mnemosyne system can be realized by building out the user-facing components, including:
+\begin{itemize}
+    \item A sophisticated \textbf{Query Processing Agent} that can translate natural language questions into formal graph queries (e.g., Cypher).
+    \item A \textbf{Response Generation Agent} that can synthesize query results into coherent, human-readable answers.
+    \item A dedicated \textbf{Document Validation Interface} that allows users to automatically check documents for consistency and completeness based on predefined or custom rules.
+\end{itemize}
+
+\paragraph{Development of a Community Benchmark.}
+A major barrier to research on large documents is the lack of standardized datasets. A significant contribution to the field would be the creation of a large-scale, public benchmark. This dataset should contain several documents of considerable size (e.g., 3,000+ pages) from complex domains like law, medicine, or engineering. Crucially, it should include manually curated ground-truth knowledge graphs and variations of the source documents with specific, seeded errors to facilitate rigorous, comparative evaluation of different systems.
+
+\section{Concluding Remarks}
+\label{sec:conclusion}
+This dissertation set out to address the critical challenge of ensuring consistency and completeness in large, complex documents. It successfully demonstrated that an LLM-powered pipeline can convert such documents into a multi-layered, structured knowledge graph capable of revealing internal inconsistencies. The research introduced a novel framework for incremental and iterative graph construction and refinement, pushing beyond the shallow, one-pass extraction methods common today.
+
+While significant performance and reliability challenges remain, they are primarily engineering hurdles that will become more tractable as AI technologies mature. The conceptual framework is sound and provides a solid foundation for future work. By refining the understanding of document validation and contributing a new methodology for knowledge extraction at scale, this work paves the way for a new generation of tools that can help humans manage the ever-increasing complexity of information.

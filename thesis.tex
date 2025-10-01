@@ -16,7 +16,8 @@
 \usepackage{pgfplots}         % For creating plots and charts
 \pgfplotsset{compat=1.18}
 \usepackage{tikz}             % For drawing vector graphics
-\usetikzlibrary{shapes, arrows.meta, calc, positioning, fit, backgrounds}
+\usetikzlibrary{shapes, arrows, calc, positioning, shadows, fit, backgrounds}
+
 
 % Optional: TikZ externalization to speed up compile times.
 % Keep this commented out until you have many complex figures.
@@ -133,7 +134,8 @@
 \include{chapters/chapter3} 
 \include{chapters/chapter4} 
 \include{chapters/chapter5}
-\include{chapters/testrefs}
+%% \include{chapters/experiments}
+%% \include{chapters/testrefs}
 
 \printbibliography[title=References]
 
@@ -141,4 +143,5 @@
 \appendix
 \include{tex/appendix-ex}
 \include{tex/experiment_summary}
+\include{tex/08_run_summary}
 \end{document}

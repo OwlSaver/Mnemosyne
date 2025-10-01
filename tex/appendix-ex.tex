@@ -1,15 +1,145 @@
-% !TEX root = ../thesis.tex
 \chapter{Source Code}
 This appendix contains the complete source code for the project. The code is organized by file and includes comments to explain the functionality of key sections. This allows for a thorough review of the implementation and facilitates future development or replication of the work. For larger projects, a link to a code repository (e.g., GitHub) may be more appropriate and can be included here.
 
+Rather than include the source code, here is a link to the Mnemosyne GitHub repository. The code in commit 3802800 was used for this work. https://github.com/OwlSaver/Mnemosyne.
+
+
 \chapter{Class Structure}
 This appendix provides a detailed description of the class structure implemented in the program. For each class, it includes the attributes, methods, and their respective purposes. A UML (Unified Modeling Language) diagram is also provided to visually represent the relationships and inheritance between the classes, offering a clear overview of the program's architecture.
+
 
 \chapter{JSON Structure}
 This appendix describes the JSON (JavaScript Object Notation) structure utilized to constrain the large language models (LLMs). It outlines the schema, including the key-value pairs, data types, and nested structures. Examples of the JSON objects are provided to illustrate how specific constraints are defined and passed to the LLMs to guide their output.
 
 \chapter{Cypher Queries}
 This appendix contains the Cypher queries used for data creation, manipulation, and retrieval from the Neo4j graph database. Each query is presented with a brief description of its function and the context in which it was executed. This provides a transparent and replicable account of all database interactions central to this project.
+
+\section{Query to compare driveway and sewer}
+
+\begin{minted}{cypher}
+// This query calculates the Jaccard similarity between the set of nodes connected
+// to 'sewer' nodes and the set of nodes connected to 'driveway' nodes.
+// A low score (close to 0) indicates the sets are very distinct.
+
+// 0. Find all nodes to be excluded and collect them into a list
+MATCH (s:Source)
+WITH collect(s) AS sourceNodes
+
+// 1. Find all 'sewer' and 'driveway' nodes to create comparison pairs
+MATCH (sewer {name: 'sewer'})
+MATCH (driveway {name: 'driveway'})
+
+// 2. For each sewer node, find its unique neighbors up to 3 hops away
+OPTIONAL MATCH p_sewer = (sewer)-[*..3]-(sewerNeighbor)
+// Ensure no node in the path is a Source node (unless it's the start node itself)
+WHERE ALL(n IN nodes(p_sewer) WHERE NOT n IN sourceNodes OR n = sewer)
+WITH sewer, driveway, sourceNodes, collect(DISTINCT sewerNeighbor) AS sewerNeighbors
+
+// 3. For each driveway node, find its unique neighbors up to 3 hops away
+OPTIONAL MATCH p_driveway = (driveway)-[*..3]-(drivewayNeighbor)
+// Ensure no node in the path is a Source node (unless it's the start node itself)
+WHERE ALL(n IN nodes(p_driveway) WHERE NOT n IN sourceNodes OR n = driveway)
+WITH sewer, driveway, sewerNeighbors, collect(DISTINCT drivewayNeighbor) AS drivewayNeighbors
+
+// 4. Calculate the intersection of the two neighbor sets
+WITH sewer, driveway, sewerNeighbors, drivewayNeighbors,
+     [node IN sewerNeighbors WHERE node IN drivewayNeighbors] AS intersection
+
+// 5. Calculate the size of the union of the two sets
+// Union size = |Set A| + |Set B| - |Intersection|
+WITH sewer, driveway, sewerNeighbors, drivewayNeighbors, intersection,
+     (size(sewerNeighbors) + size(drivewayNeighbors) - size(intersection)) AS unionSize
+
+// 6. Calculate Jaccard Similarity, avoiding division by zero
+// Jaccard = |Intersection| / |Union|
+WHERE unionSize > 0
+WITH sewer, driveway, toFloat(size(intersection)) / unionSize AS jaccardSimilarity
+
+// 7. Return the results, ordered to show the most dissimilar pairs first
+RETURN
+  sewer.id AS sewerId,
+  sewer.displayName AS sewerDisplayName,
+  driveway.id AS drivewayId,
+  driveway.displayName AS drivewayDisplayName,
+  jaccardSimilarity
+ORDER BY jaccardSimilarity ASC
+\end{minted}
+
+\section{Query to find node counts}
+\begin{minted}{cypher}
+
+// This query compares the sets of unique nodes connected to 'easttown' nodes
+// versus those connected to 'conewago' nodes.
+
+// 1. Find all unique neighbors of 'easttown' nodes (excluding Source nodes)
+MATCH (startA)
+WHERE toLower(startA.name) CONTAINS 'easttown' AND NOT startA:Source
+MATCH (startA)--(neighborA)
+WHERE NOT neighborA:Source
+WITH collect(DISTINCT neighborA) AS easttownNeighbors
+
+// 2. Find all unique neighbors of 'conewago' nodes (excluding Source nodes)
+MATCH (startB)
+WHERE toLower(startB.name) CONTAINS 'conewago' AND NOT startB:Source
+MATCH (startB)--(neighborB)
+WHERE NOT neighborB:Source
+WITH easttownNeighbors, collect(DISTINCT neighborB) AS conewagoNeighbors
+
+// 3. Calculate the intersection (nodes in both sets)
+WITH easttownNeighbors, conewagoNeighbors,
+     [node IN easttownNeighbors WHERE node IN conewagoNeighbors] AS commonNodes
+
+// 4. Calculate the unique nodes for each set
+WITH easttownNeighbors, conewagoNeighbors, commonNodes,
+     [node IN easttownNeighbors WHERE NOT node IN commonNodes] AS uniqueToEasttown,
+     [node IN conewagoNeighbors WHERE NOT node IN commonNodes] AS uniqueToConewago
+
+// 5. Return the final counts
+RETURN
+  size(easttownNeighbors) AS totalEasttownNeighbors,
+  size(conewagoNeighbors) AS totalConewagoNeighbors,
+  size(commonNodes) AS commonNeighbors,
+  size(uniqueToEasttown) AS uniqueToEasttownOnly,
+  size(uniqueToConewago) AS uniqueToConewagoOnly
+\end{minted}
+
+\section{Query to find all Easttown Nodes}
+\begin{minted}{cypher}
+
+// 1. Find all nodes where the 'name' property contains 'easttown'
+// and the node does not have the label 'Source'
+// Using toLower() makes the search case-insensitive
+MATCH (startNode)
+WHERE (toLower(startNode.name) CONTAINS 'easttown') AND NOT startNode:Source
+
+// 2. For each of those starting nodes, find all relationships and their connected nodes
+// that also do not have the label 'Source'
+// The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
+MATCH (startNode)-[r]-(connectedNode)
+WHERE NOT connectedNode:Source
+
+// 3. Return the complete pattern for each match
+RETURN startNode, r, connectedNode
+\end{minted}
+
+\section{Query to find all Conewago nodes}
+\begin{minted}{cypher}
+
+// 1. Find all nodes where the 'name' property contains 'conewago'
+// and the node does not have the label 'Source'
+// Using toLower() makes the search case-insensitive
+MATCH (startNode)
+WHERE (toLower(startNode.name) CONTAINS 'conewago') AND NOT startNode:Source
+
+// 2. For each of those starting nodes, find all relationships and their connected nodes
+// that also do not have the label 'Source'
+// The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
+MATCH (startNode)-[r]-(connectedNode)
+WHERE NOT connectedNode:Source
+
+// 3. Return the complete pattern for each match
+RETURN startNode, r, connectedNode
+\end{minted}
 
 \chapter{Prompts}
 This appendix contains a comprehensive list of all prompts used to interact with the LLMs. Each prompt is presented verbatim, accompanied by a description of its purpose, the context in which it was used, and the expected format of the response. This section is intended to ensure the replicability of the research by detailing the exact inputs given to the models.
