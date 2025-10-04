@@ -79,7 +79,93 @@
     rulecolor=\color{black},
     title=\lstname
 }
+% --- Color Definitions ---
+\definecolor{backgroundColour}{gray}{0.96}  % A very light gray for the background
 
+% --- Custom Style for Prompts ---
+\lstdefinestyle{promptstyle}{
+    language={[plain]tex}, % Treat as plain text
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    frame=single,
+    rulecolor=\color{black!30},
+    backgroundcolor=\color{backgroundColour},
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=2,
+    % Highlight the placeholders like {chunk}
+    moredelim=**[is][\color{red}\bfseries]{@}{@},
+}
+% --- Color Definitions ---
+\definecolor{commentGreen}{HTML}{228B22}
+\definecolor{stringRed}{HTML}{D22D2D}
+\definecolor{keywordBlue}{HTML}{0000FF}
+\definecolor{jsonBoolean}{HTML}{F0AD4E}
+\definecolor{backgroundColour}{gray}{0.96}
+
+% --- 1. Define the JSON language from scratch ---
+% This creates a new language called 'JSON' that listings will understand.
+\lstdefinelanguage{JSON}{
+    keywords={true, false, null},
+    keywordstyle=\color{jsonBoolean}\bfseries,
+    string=[s]{"}{"}, % Defines strings as anything between double quotes
+    stringstyle=\color{stringRed},
+    comment=[l]{//},   % Allows for line comments (like in JSONC)
+    commentstyle=\color{commentGreen},
+    morecomment=[s]{/*}{*/}, % Allows for block comments
+    ndkeywords={0,1,2,3,4,5,6,7,8,9} % Ensures numbers are not treated as keywords
+}
+
+% --- 2. Define a style that USES our new JSON language ---
+\lstdefinestyle{json}{
+    language=JSON, % Use the language we just defined above
+    backgroundcolor=\color{backgroundColour},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    frame=single,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    rulecolor=\color{black!30},
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=2,
+}
+
+% --- Custom Cypher Style Definition (no changes needed here) ---
+\lstdefinestyle{cypher}{
+    language=SQL,
+    morekeywords={
+        MATCH, WHERE, WITH, RETURN, ORDER, BY, ASC, DESC, OPTIONAL, ALL, IN, NOT,
+        CREATE, DELETE, SET, REMOVE, ON, MERGE, AND, OR, XOR,
+        CASE, WHEN, THEN, ELSE, END,
+        DISTINCT, AS, UNION, SKIP, LIMIT,
+        STARTS, ENDS, CONTAINS,
+        TRUE, FALSE, NULL,
+        collect, nodes, size, toFloat, toLower, id, displayName
+    },
+    keywordstyle=\color{keywordBlue}\bfseries,
+    comment=[l]{//},
+    commentstyle=\color{commentGreen}\itshape,
+    stringstyle=\color{stringRed},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    frame=single,
+    rulecolor=\color{black!30},
+    backgroundcolor=\color{backgroundColour},
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=2,
+}
 
 % =============================================================================
 % --- 5. BIBLIOGRAPHY & REFERENCES (biblatex)
@@ -135,13 +221,13 @@
 \include{chapters/chapter4} 
 \include{chapters/chapter5}
 %% \include{chapters/experiments}
-%% \include{chapters/testrefs}
+%%\include{chapters/testrefs}
 
 \printbibliography[title=References]
 
 % if you want to enable appendix uncomment the line below. Also you need to create your appendix file in tex/appendix-ex
 \appendix
 \include{tex/appendix-ex}
-\include{tex/experiment_summary}
-\include{tex/08_run_summary}
+%%\include{tex/experiment_summary}
+%%\include{tex/08_run_summary}
 \end{document}

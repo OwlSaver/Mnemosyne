@@ -1,6 +1,9 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 3: Methodology
+%       DUE: July 1, 2025
+%     PAGES: 25-30
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Methodology}
-% Due by July 1, 2025
-% Target: 25-30 pages
 \label{chap:methodology}
 
 \section{Introduction}
@@ -9,7 +12,7 @@ This chapter details the systematic methodology for developing and evaluating a 
 The methodology herein is designed to be rigorous and reproducible. It outlines the overall research approach, system architecture, and data sources—specifically, Pennsylvania township laws. The chapter then details the critical hyperparameters governing the system, the experimental plan for their tuning, the software tools utilized, and the multi-faceted strategy for evaluating the quality of the generated KGs in the absence of a definitive ground truth. Finally, the inherent limitations of the chosen methods and relevant ethical considerations are examined, concluding with a restatement of the research questions and hypotheses this framework aims to address.
 
 \section{Approach}
-This research introduces Mnemosyne, a novel, multi-stage pipeline for transforming large, complex legislative documents into queryable Knowledge Graphs (KGs). Hereafter, this system will be referred to as Mnemosyne. By leveraging Large Language Models (LLMs) \parencite{RefWorks:RefID:107-benjira2025automated, RefWorks:RefID:162-lairgi2024knowledge}, our system is designed to facilitate automated analysis of legal texts for internal consistency and completeness. The architecture prioritizes two critical features: **usability**, requiring minimal specialized skill for operation, and **traceability**, ensuring every piece of information in the KG can be precisely linked to its source sentence. While developed using legal corpora, the modular design is generalizable to other domains characterized by large, structured documents \parencite{RefWorks:RefID:116-shaham2022scrolls}.
+This research introduces Mnemosyne, a novel, multi-stage pipeline for transforming large, complex legislative documents into queryable Knowledge Graphs (KGs). Hereafter, this system will be referred to as Mnemosyne. By leveraging Large Language Models (LLMs) \parencite{RefWorks:RefID:107-benjira2025automated, RefWorks:RefID:162-lairgi2024knowledge}, our system is designed to facilitate automated analysis of legal texts for internal consistency and completeness. The architecture prioritizes two critical features: usability, requiring minimal specialized skill for operation, and traceability, ensuring every piece of information in the KG can be precisely linked to its source sentence. While developed using legal corpora, the modular design is generalizable to other domains characterized by large, structured documents \parencite{RefWorks:RefID:116-shaham2022scrolls}.
 
 \subsection{Architectural Overview}
 The system employs a modular pipeline that synthesizes established KG construction practices \parencite{RefWorks:RefID:118-ji2022survey} with a novel, two-tiered memory architecture adapted for the legal domain. This design manages the inherent complexity and context window limitations of modern LLMs \parencite{RefWorks:RefID:99-liu2025comprehensive} by building the KG iteratively. The data flows through a sequence of components, from initial document processing to advanced semantic enrichment. This modularity permits targeted optimization and evaluation at each stage. \Cref{fig:proposed_architecture} provides a high-level depiction of this data flow.
@@ -29,14 +32,27 @@ The system employs a modular pipeline that synthesizes established KG constructi
 \subsubsection{Document Ingestion and Chunking (P1)}
 The pipeline begins by ingesting source documents and segmenting them into semantically coherent units, or \textit{chunks}. This chunking process is a critical preprocessing step to overcome the fixed context window of LLMs. A naive split can sever key semantic links; therefore, this component implements and evaluates several intelligent strategies, including fixed-size token windows, paragraph-based segmentation, and overlapping chunks. For hierarchically structured legal documents, a structure-aware strategy leverages the heading styles in DOCX files to ensure chunks do not violate logical boundaries (e.g., articles, sections). Each chunk is meticulously annotated with location metadata (e.g., page, section number) to guarantee end-to-end traceability.
 
+While a fixed-size token window is computationally simple, it risks arbitrarily severing legal clauses and definitions, thereby destroying semantic context. Paragraph-based segmentation is an improvement, but legal paragraphs can vary dramatically in length. Our primary approach, a structure-aware strategy, leverages the hierarchical nature of DOCX files by identifying heading styles (e.g., 'Heading 1' for Articles, 'Heading 2' for Sections). This method ensures that chunks correspond to logical divisions in the law, preserving the integrity of individual provisions. To mitigate context loss at the boundaries, we will experiment with an overlapping chunk mechanism, where the last 1-2 sentences of a chunk are repeated at the beginning of the next.
+
+\subsubsection{Justification for Structure-Aware Chunking}
+The selection of a chunking strategy is not merely a technical preprocessing step; it is a critical decision that directly impacts the semantic integrity of the data fed to the LLM. While simpler methods like fixed-size token windows offer computational efficiency and predictability, they are fundamentally agnostic to the document's underlying logical structure. In a domain like law, where the precise scope of a clause or definition is paramount, arbitrarily splitting a sentence can lead to catastrophic context loss. For example, a sentence specifying an exception to a rule might be split from the rule itself, leading the LLM to misinterpret the rule as absolute.
+
+Paragraph-based chunking offers an improvement by respecting basic prose boundaries. However, legal documents often contain paragraphs of vastly different lengths, from single-line definitions to dense, multi-sentence regulatory requirements. This can result in chunks that are either too small to provide sufficient context or too large to fit within the LLM's context window.
+
+Our choice of a \textbf{structure-aware strategy} is therefore justified by the nature of the legal corpus itself. By leveraging the explicit hierarchical metadata embedded in DOCX files (e.g., heading styles for Articles, Sections, and Subsections), we create chunks that correspond to discrete, logical units of law. This method presumes that the document's authors used these structural elements to delineate self-contained ideas. This alignment between the chunk and the logical unit maximizes the semantic context available to the LLM for each processing task, thereby minimizing the risk of misinterpretation at the foundational stage of knowledge extraction. The trade-off is a dependency on well-structured source documents, a limitation addressed in Section 3.10.
+
 \subsubsection{LLM-Based Information Extraction (P3)}
 This component serves as the core information extraction engine. For each text chunk, a carefully engineered prompt instructs an LLM to perform two coordinated tasks: Named Entity Recognition (NER) and Relation Extraction (RE). The model identifies entities corresponding to a predefined legal ontology (e.g., \texttt{Ordinance}, \texttt{DefinedTerm}, \texttt{ZoningDistrict}) and the semantic relationships between them (e.g., \texttt{AMENDS}, \texttt{DEFINES}, \texttt{PERMITS\_IN}). To ensure structured, reliable output, the LLM’s generation is constrained to a predefined JSON schema. The result for each chunk is a self-contained KG fragment, a design that enables parallel processing for enhanced throughput.
+
+The efficacy of component P3 is highly dependent on prompt design. We will employ a few-shot prompting strategy. Each prompt sent to the LLM will include not only the text chunk to be analyzed but also 2-3 canonical examples of correctly extracted entities and relations. This guides the model towards the desired output format and legal ontology. Furthermore, the prompt will explicitly instruct the model to adhere to the provided JSON schema, a technique known as 'schema-constrained generation,' to minimize output errors and streamline parsing.
 
 \subsubsection{Short-Term Memory (STM): Batch Aggregation (KG1)}
 As KG fragments are generated, they are temporarily held in the Short-Term Memory (STM), an in-memory buffer. The STM functions as an efficient staging area, accumulating fragments until a predefined batch size is reached (the "STM fullness threshold" hyperparameter). This batching strategy optimizes performance by reducing the I/O overhead associated with numerous small writes to the persistent database. It also creates an opportunity for low-cost, preliminary consolidation operations before committing the data to long-term storage.
 
 \subsubsection{LTM Ingestion and Entity Resolution (P4 \& KG2)}
 Once the STM reaches capacity, the Long-Term Memory (LTM) Ingestion process is triggered. This blocking operation transfers the batch of KG fragments from the STM into the persistent graph database, which constitutes the LTM. The LTM is implemented in Neo4j, a database optimized for highly interconnected data. A crucial step in this process is \textit{entity resolution}, which de-duplicates nodes by merging new entities with existing ones based on unique identifiers or high lexical similarity. For example, multiple mentions of ``Ordinance 2024-05'' are resolved into a single canonical node. This ensures the global KG remains consistent and serves as the definitive, structured representation of the source documents.
+
+Entity resolution in P4 is a multi-step process. For entities with explicit identifiers, such as an ordinanceNumber, resolution is a straightforward merge operation. For entities without unique IDs, such as DefinedTerm, we employ a hybrid approach. Initially, nodes are merged based on high lexical similarity (e.g., a Levenshtein distance below a certain threshold). In the subsequent asynchronous refinement stage (P5), we will further refine this by comparing the vector embeddings of potentially duplicate nodes. Nodes with a cosine similarity above a tuned threshold (e.g., 0.95) will be merged, ensuring that semantically identical concepts are represented by a single canonical node.
 
 \subsubsection{Asynchronous KG Refinement and Enrichment (P5)}
 The final stage is an asynchronous engine that performs computationally intensive refinement operations to enhance the global KG's semantic richness. This process operates iteratively on small, random subsets of the graph, allowing the KG to improve gradually without blocking ingestion or requiring complete reprocessing. This stage is triggered only when the primary ingestion pipeline is idle. Key operations include:
@@ -48,6 +64,18 @@ The final stage is an asynchronous engine that performs computationally intensiv
     \item \textbf{Instance Type Correction:} Re-classifying entity instances based on new evidence or a more appropriate type within the evolving ontology.
 \end{itemize}
 This two-tiered memory architecture effectively decouples initial data aggregation from deeper semantic enrichment, creating a robust and scalable framework for KG construction.
+
+\subsubsection{Prompt Engineering Strategy}
+The interaction with the LLM is mediated entirely through prompts, making the design of these prompts a crucial component of the methodology. An inadequately specified prompt can lead to inconsistent output, hallucinations, or a failure to adhere to the required JSON schema. Our approach is centered on a principle of \textbf{structured, few-shot prompting} to maximize reliability and accuracy.
+
+A prompt in our system consists of four key components:
+\begin{enumerate}
+    \item \textbf{Role and Goal Definition:} The prompt begins by assigning a role to the LLM (e.g., "You are an expert legal analyst tasked with extracting structured information") and clearly stating the overall objective (e.g., "Your goal is to identify all legal entities and their relationships in the provided text and format them according to the specified JSON schema."). This primes the model for the specific task domain.
+    \item \textbf{Schema and Type Definitions:} The prompt explicitly provides the complete JSON schema that the output must validate against. Crucially, it also includes concise definitions for each entity and relationship type (e.g., "An `Ordinance` is a formal legislative act... A `DEFINES` relationship connects a `DocumentSection` to a `DefinedTerm` that it formally defines."). This reduces ambiguity and helps the model correctly classify extracted information.
+    \item \textbf{Few-Shot Examples:} As mentioned, 2-3 canonical examples of input text and the corresponding correct JSON output are included. These examples are carefully selected to cover common cases as well as potential edge cases (e.g., a sentence containing multiple relationships). This in-context learning is vital for guiding the model's output to match the desired structure and conventions.
+    \item \textbf{Input Text and Final Instruction:} Finally, the text chunk to be processed is provided, followed by a concluding instruction that reiterates the primary command (e.g., "Now, based on the text provided above, extract the entities and relationships.").
+\end{enumerate}
+This multi-part prompt structure is designed to be robust, providing layers of instruction and context that constrain the LLM's generative capabilities towards a deterministic and accurate extraction task. The prompts themselves are treated as a critical hyperparameter, subject to iterative refinement throughout the preliminary experimental phase.
 
 \section{Document Processing Workflow}
 The journey of a single document through the system is a multi-stage process designed to incrementally build and refine a knowledge graph (KG). This workflow is illustrated in the sequence of diagrams from \cref{fig:chunk_1_processing} to \cref{fig:Long_Term_Memory_processing}. Each figure captures a snapshot of the system's state, showing how data is transformed at each step.
@@ -110,6 +138,14 @@ Finally, the LTM is not a static repository. As depicted in \cref{fig:Long_Term_
 
 In summary, this entire workflow represents a cyclical and scalable approach to knowledge extraction and management. The division between a fast, transient Short-Term Memory and a persistent, refined Long-Term Memory allows the system to process information efficiently without sacrificing the quality and coherence of the final knowledge graph. The initial, rapid ingestion into STM ensures that incoming data is captured without delay, while the subsequent consolidation and asynchronous refinement processes guarantee that the LTM evolves into a comprehensive and accurate representation of the knowledge contained within the source documents. This dual-memory architecture is key to balancing the demands of real-time processing with the need for deep, semantic integration.
 
+\section{Alternative Methodologies Considered}
+
+\subsection{KG vs. Retrieval-Augmented Generation (RAG)}
+An alternative approach considered was a pure Retrieval-Augmented Generation (RAG) system. In a RAG model, a document is chunked and stored in a vector database. When a query about consistency is posed, the system retrieves relevant chunks and feeds them to an LLM. While effective for question-answering, RAG is ill-suited for verifying global consistency. Detecting a conflict might require synthesizing information from two chunks that are not semantically similar to any single query (e.g., a definition in Chapter 1 and a conflicting application in Chapter 20). The RAG approach is 'on-demand' and localized, whereas our KG-based methodology creates a persistent, holistic model of the entire document, allowing for graph-wide structural queries that can systematically uncover such long-distance dependencies and inconsistencies.
+
+\subsection{Property Graph vs. RDF/SPARQL}
+We also considered using the RDF triple-store model with SPARQL. However, the property graph model used by Neo4j was selected for its flexibility and intuitive query language (Cypher). Property graphs allow properties to be stored on both nodes and edges, which is useful for attaching metadata like effectiveDate to an AMENDS relationship. Cypher's pattern-matching syntax is also highly expressive for the complex relational queries required for this research.
+
 \section{Knowledge Graph Data Model for Legal Text Analysis}
 A robust data model is foundational to the development of a Knowledge Graph (KG) capable of representing complex legal corpora and facilitating sophisticated analytical queries. This section details the proposed ontological framework for a Neo4j-based Legal TTP (LTM), designed to capture the semantic structure of municipal legal codes. The model's schema is engineered for both representational fidelity to the source text and the computational efficiency required for automated consistency and completeness validation.
 
@@ -123,8 +159,6 @@ The core entities within the legal documents are modeled as nodes, each assigned
     textfont=it, 
     justification=centering
 }
-\caption{Node Schema and Property Definitions.}
-\label{tab:node_schema}
 \begin{tabularx}{\textwidth}{@{} >{\raggedright}p{0.22\textwidth} >{\raggedright}p{0.45\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth} @{}}
 \toprule
 \textbf{Node Label} & \textbf{Description} & \textbf{Key Properties} \\ 
@@ -144,6 +178,8 @@ The core entities within the legal documents are modeled as nodes, each assigned
 \texttt{Reference} & A citation pointing to another legal provision, either internal or external to the current code. & \texttt{targetIdentifier}, \texttt{referenceType} (e.g., INTERNAL, EXTERNAL), \texttt{sourceText} \\ 
 \bottomrule
 \end{tabularx}
+\caption{Node Schema and Property Definitions.}
+\label{tab:node_schema}
 \end{table}
 
 \subsection{Semantic Relations: Edge Schema}
@@ -156,8 +192,6 @@ The semantic connections and interactions between nodes are represented by direc
     textfont=it, 
     justification=centering
 }
-\caption{Relationship Schema and Semantic Descriptions.}
-\label{tab:relationship_schema}
 \begin{tabularx}{\textwidth}{@{} >{\raggedright}p{0.2\textwidth} >{\raggedright}X L{0.15\textwidth} @{}}
 \toprule
 \textbf{Relationship Type} & \textbf{Description (Source \(\rightarrow\) Target)} & \textbf{Properties} \\
@@ -177,6 +211,8 @@ The semantic connections and interactions between nodes are represented by direc
 \texttt{USES\_TERM} & \texttt{DocumentSection} \(\rightarrow\) \texttt{DefinedTerm}. Denotes the usage of a previously defined term within a section. & -- \\
 \bottomrule
 \end{tabularx}
+\caption{Relationship Schema and Semantic Descriptions.}
+\label{tab:relationship_schema}
 \end{table}
 
 \subsection{Model Application: Inconsistency Detection}
@@ -222,8 +258,6 @@ Finally, \textbf{Processing} parameters control the asynchronous consolidation a
     textfont=it,  
     justification=centering
     }
-\caption{Hyperparameter Categories and Specific Parameters.}
-\label{tab:hyperparameter_exp_design}
 % Use tabularx and set its width to the width of the text block
 \begin{tabularx}{\textwidth}{@{} lX @{}} 
 \toprule
@@ -250,7 +284,20 @@ Finally, \textbf{Processing} parameters control the asynchronous consolidation a
 \addlinespace
 \bottomrule
 \end{tabularx}
+\caption{Hyperparameter Categories and Specific Parameters.}
+\label{tab:hyperparameter_exp_design}
 \end{table}
+
+\subsection{Hyperparameter Tuning Methodology}
+Given the number of hyperparameters and the computational cost of each experimental run, an exhaustive grid search is infeasible. Instead, we will employ a more targeted approach best described as \textbf{iterative, one-at-a-time tuning}. This process involves establishing a reasonable baseline configuration and then varying a single hyperparameter at a time while holding others constant.
+
+The tuning process will proceed in a logical sequence:
+\begin{enumerate}
+    \item \textbf{LLM and Prompt Selection:} The initial and most critical step is to select the core LLM and finalize the prompt design. Using a small, representative sample of the dataset, different models (e.g., GPT-4.1, Gemini 4.5) will be tested against the manual ground truth. The model providing the best balance of F1-score, cost, and processing time will be selected. The prompt will be refined in parallel to maximize the chosen model's performance.
+    \item \textbf{Chunking Strategy Optimization:} With the LLM and prompt fixed, we will then tune the chunking parameters. We will vary the chunk size (in sentences or tokens) and overlap percentage, evaluating the impact on both extraction quality and overall runtime. The goal is to maximize the context provided to the LLM without exceeding its limits or incurring excessive processing overhead from large overlaps.
+    \item \textbf{Processing and Refinement Tuning:} Finally, the parameters governing the STM and LTM processes will be tuned. This includes the STM fullness threshold and the batch sizes for LTM formation and refinement. These parameters primarily affect system performance and resource utilization rather than extraction accuracy, so they will be optimized for throughput and stability.
+\end{enumerate}
+While this approach does not guarantee finding the global optimum configuration, it is a pragmatic and widely used methodology for exploring the hyperparameter space in complex, multi-stage systems. The results of this tuning phase will establish the final configuration used for the main experiments described in Chapter 4.
 
 \section{System Implementation and Environment}
 \label{sec:technical_environment}
@@ -303,8 +350,6 @@ The primary metric will be the \textbf{Error Detection Rate (EDR)}, defined as t
     textfont=it,  
     justification=centering
     }
-\caption{Summary of Measurement Metrics.}
-\label{tab:measurement_metrics_summary}
 % Use tabularx to make the table fit the text width.
 % The 'X' column will wrap the long text automatically.
 \begin{tabularx}{\textwidth}{@{} lX @{}}
@@ -330,7 +375,39 @@ The primary metric will be the \textbf{Error Detection Rate (EDR)}, defined as t
 \addlinespace
 \bottomrule
 \end{tabularx}
+\caption{Summary of Measurement Metrics.}
+\label{tab:measurement_metrics_summary}
 \end{table}
+
+\subsubsection{Quantitative Extraction Metrics}
+To formally measure the performance of the entity and relation extraction, we use the standard metrics of Precision (P), Recall (R), and F1-score. These are calculated based on the counts of True Positives (TP), False Positives (FP), and False Negatives (FN).
+
+A \textbf{True Positive (TP)} is an entity or relation that is correctly identified by the system and matches an annotation in the ground truth. A \textbf{False Positive (FP)} is an entity or relation identified by the system that does not exist in the ground truth. A \textbf{False Negative (FN)} is an entity or relation that exists in the ground truth but was missed by the system.
+
+The metrics are defined as follows:
+\begin{equation}
+    \text{Precision (P)} = \frac{\text{TP}}{\text{TP} + \text{FP}}
+\end{equation}
+Precision measures the accuracy of the extractions; of all the items the system identified, what fraction was correct?
+
+\begin{equation}
+    \text{Recall (R)} = \frac{\text{TP}}{\text{TP} + \text{FN}}
+\end{equation}
+Recall measures the completeness of the extractions; of all the items that should have been identified, what fraction did the system find?
+
+\begin{equation}
+    \text{F1-score} = 2 \times \frac{\text{P} \times \text{R}}{\text{P} + \text{R}}
+\end{equation}
+The F1-score is the harmonic mean of Precision and Recall, providing a single metric that balances both concerns. An F1-score of 1.0 indicates perfect precision and recall.
+
+\subsubsection{Expert Review Protocol for Qualitative Assessment}
+The qualitative review will follow a structured protocol to ensure consistency and minimize subjectivity. The domain expert(s) will be presented with 20-30 randomly selected subgraphs from the final KG. For each subgraph, they will also be shown the source text from which the entities and relationships were extracted. They will be asked to assess the subgraph based on a 5-point Likert scale for the following criteria:
+\begin{itemize}
+    \item \textbf{Factual Accuracy:} Do the nodes and edges in the subgraph accurately reflect the information stated in the source text? (1 = Very Inaccurate, 5 = Very Accurate)
+    \item \textbf{Semantic Coherence:} Do the relationships between the entities make logical sense within the legal context? (1 = Very Incoherent, 5 = Very Coherent)
+    \item \textbf{Completeness:} Does the subgraph capture the most important entities and relationships described in the source text, or are there significant omissions? (1 = Very Incomplete, 5 = Very Complete)
+\end{itemize}
+In cases where multiple experts are used, we will calculate Fleiss' Kappa to measure the inter-rater reliability of their assessments, ensuring the qualitative evaluation is robust.
 
 \section{Methodological Limitations}
 This research acknowledges several limitations. The system's accuracy is dependent on the capabilities of the underlying LLM, which can hallucinate or misinterpret nuanced text \parencite{RefWorks:RefID:101-zhao2023survey}. Document chunking inherently risks losing context that spans across chunks \parencite{RefWorks:RefID:104-qu2024semantic}. KG evaluation involves subjective judgment in the absence of a comprehensive ground truth, and errors in early pipeline stages can propagate \parencite{RefWorks:RefID:121-zhong2024comprehensive}. The scope of this praxis is limited to textual content (excluding complex tables, figures, and formulas), and the system is developed and evaluated on Pennsylvania township laws; performance on other legal document types may vary. Finally, this work focuses on generating a KG *suitable* for C\&C checks; the implementation and evaluation of a fully automated C\&C system is designated as future work \parencite{RefWorks:RefID:10-zowghi2003interplay}.
