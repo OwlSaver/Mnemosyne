@@ -1,22 +1,211 @@
+\chapter{Experiment Summary}
+\label{app:exp_summary}
+
+% --- REVISION NOTES ---
+% I've restructured this section for better clarity and a more formal tone.
+% - Replaced conversational prose with direct statements.
+% - Used a descriptive list for summary statistics.
+% - Used nested itemize environments to create a visual representation of the directory structure.
+% - Formatted the notable experiments in a list for improved readability.
+
+This appendix provides a summary of the computational experiments conducted for this research, detailing the dataset statistics and the organizational structure of the data. The summary is current as of October 3, 2025.
+
+\section{Overview}
+
+A complete record of all experiments conducted between August 3, 2025, and September 26, 2025, is preserved. The key statistics of the experimental data are as follows:
+
+\begin{description}
+    \item[Total Folders:] 603
+    \item[Total Files:] 3,002
+    \item[Total Size on Disk:] 488 MB
+    \item[Time Period:] August 3, 2025, 21:14:09 UTC to September 26, 2025, 03:27:46 UTC
+\end{description}
+
+\section{Directory Structure}
+
+All experimental data is stored in a root directory named \texttt{Mnemosyne} on Google Drive. The organizational structure is designed to separate input data from generated output, ensuring reproducibility and ease of navigation.
+
+\begin{itemize}
+    \item \texttt{/Mnemosyne/} (Root Directory)
+    \begin{itemize}
+        \item \texttt{/Input/}
+        \begin{itemize}
+            \item \texttt{/Source\_Documents/}
+            \item \texttt{/Ground\_Truth\_Hand\_Created/}
+            \item \texttt{/Ground\_Truth\_Generated/}
+        \end{itemize}
+        \item \texttt{/Output/}
+        \begin{itemize}
+            \item \texttt{/Figures/} (Used for general diagrams until August 10, 2025)
+            \item \texttt{/RUN\_(date)\_(UTC Time)/} (One folder per execution)
+            \begin{itemize}
+                \item \texttt{/Figures/} (Contains run-specific visualizations, e.g., word clouds)
+                \item \texttt{/(experiment\_name)/} (Contains experiment-specific CSV files)
+                \item \texttt{summary\_(metric).csv} (Contains aggregate results across all experiments in the run)
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+Each experimental execution is encapsulated within a uniquely named folder, following the convention \texttt{RUN\_YYYY-MM-DD\_HH-MM-SS}, which facilitates chronological tracking and isolates the artifacts of each run.
+
+\section{Notable Experiments}
+
+While all runs are preserved, several key experiments were foundational to the results presented in this work. These are highlighted below:
+
+\begin{description}
+    \item[\texttt{RUN\_2025-09-13\_21-42-16}] Ablation study investigating the impact of refinement cycles.
+    \item[\texttt{RUN\_2025-09-13\_22-07-58}] Parameter sensitivity analysis focusing on document chunk size.
+    \item[\texttt{RUN\_2025-09-13\_22-59-46}] Comparative analysis of OpenAI and Gemini language models.
+    \item[\texttt{RUN\_2025-09-16\_03-21-47}] Validation run to establish baseline performance metrics.
+    \item[\texttt{RUN\_2025-09-19\_01-48-36}] Execution of the primary experiments reported in the main body of this document.
+\end{description}
+
 \chapter{Source Code}
-This appendix contains the complete source code for the project. The code is organized by file and includes comments to explain the functionality of key sections. This allows for a thorough review of the implementation and facilitates future development or replication of the work. For larger projects, a link to a code repository (e.g., GitHub) may be more appropriate and can be included here.
+\label{app:source_code}
 
-Rather than include the source code, here is a link to the Mnemosyne GitHub repository. The code in commit 3802800 was used for this work. https://github.com/OwlSaver/Mnemosyne.
+% --- REVISION NOTES ---
+% This is more concise and direct.
+% - The text clearly states that the code is available in a repository for reproducibility.
+% - Uses the \url command from the 'hyperref' package to create a clickable link, which is standard practice.
+% - Emphasizes the specific commit hash to ensure that a reviewer is looking at the exact version of the code used.
 
+The complete source code for this project is publicly available in a Git repository to ensure full transparency and facilitate the replication of this work. For clarity, the specific version of the code used to generate the results in this document is explicitly referenced by its commit hash.
+
+\begin{description}
+    \item[Repository:] Mnemosyne
+    \item[URL:] \url{https://github.com/OwlSaver/Mnemosyne}
+    \item[Commit Hash:] \texttt{3802800}
+\end{description}
 
 \chapter{Class Structure}
 This appendix provides a detailed description of the class structure implemented in the program. For each class, it includes the attributes, methods, and their respective purposes. A UML (Unified Modeling Language) diagram is also provided to visually represent the relationships and inheritance between the classes, offering a clear overview of the program's architecture.
 
-
 \chapter{JSON Structure}
+\label{app:json_structure}
+
 This appendix describes the JSON (JavaScript Object Notation) structure utilized to constrain the large language models (LLMs). It outlines the schema, including the key-value pairs, data types, and nested structures. Examples of the JSON objects are provided to illustrate how specific constraints are defined and passed to the LLMs to guide their output.
 
+\section{Knowledge Graph JSON Schema}
+
+To ensure the LLM generates a valid knowledge graph, the following JSON Schema was used to define the required structure. This schema specifies that the output must contain two top-level keys: \texttt{nodes} and \texttt{relationships}. It further defines the required properties for each node (e.g., \texttt{id}, \texttt{labels}) and relationship (e.g., \texttt{source}, \texttt{target}, \texttt{type}), enforcing a decoupled graph structure suitable for efficient ingestion into a Neo4j database.
+
+\begin{lstlisting}[style=json, caption={The JSON Schema defining the structure for the knowledge graph output.}, label={lst:kg_schema}]
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/knowledge_graph.schema.json",
+  "title": "Knowledge Graph for Neo4j Import",
+  "description": "A JSON structure representing a knowledge graph with nodes and relationships decoupled for efficient loading into Neo4j.",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "description": "A list of all unique entities (nodes) in the graph.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "A unique identifier for the node within this JSON document.",
+            "type": "string"
+          },
+          "labels": {
+            "description": "An array of labels for the node, corresponding to Neo4j labels (e.g., ['Person', 'Author']).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "properties": {
+            "description": "A key-value map of the node's properties.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["id", "labels", "properties"]
+      }
+    },
+    "relationships": {
+      "description": "A list of all relationships connecting the nodes.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The 'id' of the starting node for the relationship.",
+            "type": "string"
+          },
+          "target": {
+            "description": "The 'id' of the ending node for the relationship.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of the relationship, corresponding to a Neo4j relationship type (e.g., 'EDUCATED_AT').",
+            "type": "string"
+          },
+          "properties": {
+            "description": "An optional key-value map of the relationship's properties.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["source", "target", "type"]
+      }
+    }
+  },
+  "required": ["nodes", "relationships"]
+}
+\end{lstlisting}
+
+\section{Example of a Valid JSON Object}
+
+The following listing shows an example of a JSON object that validates against the schema defined in Listing \ref{lst:kg_schema}. This demonstrates the format of the data generated by the LLM, containing two nodes (a \texttt{Person} and a \texttt{University}) and a single relationship (\texttt{EDUCATED\_AT}) connecting them.
+
+\begin{lstlisting}[style=json, caption={An example of a valid knowledge graph JSON object conforming to the schema.}, label={lst:kg_example}]
+{
+  "nodes": [
+    {
+      "id": "person_1",
+      "labels": ["Person", "Scientist"],
+      "properties": {
+        "name": "Marie Curie",
+        "birth_year": 1867,
+        "nationality": "Polish"
+      }
+    },
+    {
+      "id": "uni_1",
+      "labels": ["University"],
+      "properties": {
+        "name": "University of Paris",
+        "location": "Paris, France"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "person_1",
+      "target": "uni_1",
+      "type": "EDUCATED_AT",
+      "properties": {
+        "degree": "Doctor of Science",
+        "year_graduated": 1903
+      }
+    }
+  ]
+}
+\end{lstlisting}
+
 \chapter{Cypher Queries}
+\label{app:cypher_queries}
+
 This appendix contains the Cypher queries used for data creation, manipulation, and retrieval from the Neo4j graph database. Each query is presented with a brief description of its function and the context in which it was executed. This provides a transparent and replicable account of all database interactions central to this project.
 
-\section{Query to compare driveway and sewer}
+\section{Jaccard Similarity for Node Neighborhoods}
 
-\begin{minted}{cypher}
+To quantify the conceptual overlap between nodes, the Jaccard similarity coefficient was calculated for the neighborhoods of specific entities. Listing \ref{lst:jaccard} shows the query used to compare the set of nodes within a three-hop distance of 'sewer' nodes against the set connected to 'driveway' nodes. A low similarity score indicates that the two concepts are largely disconnected within the graph's topology.
+
+\begin{lstlisting}[style=cypher, caption={Jaccard similarity between 'sewer' and 'driveway' node neighborhoods.}, label={lst:jaccard}]
 // This query calculates the Jaccard similarity between the set of nodes connected
 // to 'sewer' nodes and the set of nodes connected to 'driveway' nodes.
 // A low score (close to 0) indicates the sets are very distinct.
@@ -63,11 +252,13 @@ RETURN
   driveway.displayName AS drivewayDisplayName,
   jaccardSimilarity
 ORDER BY jaccardSimilarity ASC
-\end{minted}
+\end{lstlisting}
 
-\section{Query to find node counts}
-\begin{minted}{cypher}
+\section{Comparative Node Set Analysis}
 
+This query was designed to analyze and quantify the overlap between two distinct subgraphs. Specifically, it compares the set of unique nodes connected to 'easttown' entities versus those connected to 'conewago' entities. The query returns counts for the total neighbors of each set, the number of neighbors they have in common, and the number of neighbors unique to each set.
+
+\begin{lstlisting}[style=cypher, caption={Comparison of node sets connected to 'easttown' and 'conewago'.}, label={lst:node_counts}]
 // This query compares the sets of unique nodes connected to 'easttown' nodes
 // versus those connected to 'conewago' nodes.
 
@@ -101,59 +292,251 @@ RETURN
   size(commonNodes) AS commonNeighbors,
   size(uniqueToEasttown) AS uniqueToEasttownOnly,
   size(uniqueToConewago) AS uniqueToConewagoOnly
-\end{minted}
+\end{lstlisting}
 
-\section{Query to find all Easttown Nodes}
-\begin{minted}{cypher}
+\section{Subgraph Retrieval Queries}
 
+To visualize and analyze specific areas of the knowledge graph, queries were used to retrieve all nodes and relationships connected to a particular entity of interest. Listings \ref{lst:easttown_subgraph} and \ref{lst:conewago_subgraph} show the functionally identical queries used to return the entire one-hop subgraph for nodes containing the terms 'easttown' and 'conewago', respectively, while excluding any connections to document `Source` nodes.
+
+\begin{lstlisting}[style=cypher, caption={Retrieving the subgraph for all 'Easttown' nodes.}, label={lst:easttown_subgraph}]
 // 1. Find all nodes where the 'name' property contains 'easttown'
-// and the node does not have the label 'Source'
-// Using toLower() makes the search case-insensitive
+//    and the node does not have the label 'Source'
+//    Using toLower() makes the search case-insensitive
 MATCH (startNode)
 WHERE (toLower(startNode.name) CONTAINS 'easttown') AND NOT startNode:Source
 
 // 2. For each of those starting nodes, find all relationships and their connected nodes
-// that also do not have the label 'Source'
-// The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
+//    that also do not have the label 'Source'
+//    The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
 MATCH (startNode)-[r]-(connectedNode)
 WHERE NOT connectedNode:Source
 
 // 3. Return the complete pattern for each match
 RETURN startNode, r, connectedNode
-\end{minted}
+\end{lstlisting}
 
-\section{Query to find all Conewago nodes}
-\begin{minted}{cypher}
-
+\begin{lstlisting}[style=cypher, caption={Retrieving the subgraph for all 'Conewago' nodes.}, label={lst:conewago_subgraph}]
 // 1. Find all nodes where the 'name' property contains 'conewago'
-// and the node does not have the label 'Source'
-// Using toLower() makes the search case-insensitive
+//    and the node does not have the label 'Source'
+//    Using toLower() makes the search case-insensitive
 MATCH (startNode)
 WHERE (toLower(startNode.name) CONTAINS 'conewago') AND NOT startNode:Source
 
 // 2. For each of those starting nodes, find all relationships and their connected nodes
-// that also do not have the label 'Source'
-// The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
+//    that also do not have the label 'Source'
+//    The pattern (startNode)-[r]-(connectedNode) finds relationships in either direction
 MATCH (startNode)-[r]-(connectedNode)
 WHERE NOT connectedNode:Source
 
 // 3. Return the complete pattern for each match
 RETURN startNode, r, connectedNode
-\end{minted}
+\end{lstlisting}
 
-\chapter{Prompts}
-This appendix contains a comprehensive list of all prompts used to interact with the LLMs. Each prompt is presented verbatim, accompanied by a description of its purpose, the context in which it was used, and the expected format of the response. This section is intended to ensure the replicability of the research by detailing the exact inputs given to the models.
+\chapter{LLM Prompts}
+\label{app:prompts}
 
-\chapter{Evaluation Metrics}
-This appendix details the metrics used to evaluate the performance of the system. It provides the mathematical formulas for each metric, explains why each was chosen, and describes the methodology used for its calculation. This ensures that the evaluation process is transparent and reproducible.
+This appendix contains a comprehensive list of all prompts used to interact with the Large Language Models (LLMs). Each prompt is presented verbatim, accompanied by a description of its purpose, the context in which it was used, and the expected format of the response. This section is intended to ensure the replicability of the research by detailing the exact inputs given to the models. Note that placeholders, highlighted in red like \texttt{@chunk@}, are dynamically populated by the system at runtime.
 
-\chapter{Problems Encountered}
-This appendix serves as a log of the significant problems encountered during the project's development and execution. For each issue, it details the nature of the problem, the steps taken to diagnose it, the attempted solutions, and the final resolution. This section aims to provide a transparent account of the research process and to assist others who might face similar challenges.
+\section{Initial Knowledge Graph Extraction}
 
-Entities needed IDs but the LLM has no realtime access so no GUID or time based IDs. They had to be nique accros chunks. So, I cam up with an approaach passing in the date, time, chunk number and document name. It is not space efficent.
+The following prompt is the cornerstone of the data extraction pipeline. It instructs the LLM to act as a knowledge graph expert, analyzing a chunk of text to identify named entities and their relationships. It enforces a strict output format, including the creation of distinct `Instance` and `Type` nodes and the mandatory `IS\_A` relationship connecting them.
 
-Constantly having to reset colab. After running for several minutes, in somecases colab neeeds to be restarted. this was particularly problematic dring development where each change wold reqire a restart.
+\begin{lstlisting}[style=promptstyle, caption={Prompt for initial knowledge graph extraction from a text chunk.}, label={lst:prompt_kg_base}]
+You are an expert assistant that analyzes text to build a knowledge graph. Your goal is to extract named entities, their conceptual types, and the relationships between them. Follow the instructions and the example precisely.
 
-neo4j shuts down
+1. Instructions
 
-I had to pt in several rety sections because the LLM wold sometimes produce bad results.
+A. Instance and Type Nodes: For every named entity you identify:
+    Create an Instance Node: This represents the specific entity (e.g., "Ordinance 15-01").
+        It must have the single label `["Instance"]`.
+        Its `properties` must include:
+            `id`: Assign a unique `id` starting with the chunk prefix `c@chunk@-node-` followed by a sequential number (e.g., "c@chunk@-node-1", "c@chunk@-node-2").
+            `name`: The lowercase version of the entity's text (e.g., "ordinance 15-01").
+            `displayName`: The Title Case version of the entity's text (e.g., "Ordinance 15-01").
+            `mergeCount`: Initialized to `0`.
+            `refinementCount`: Initialized to `0`.
+        Add any other properties you find relevant.
+    Create a Type Node: This represents the abstract concept (e.g., "Ordinance").
+        It must have the single label `["Type"]`.
+        Do not worry about creating duplicate Type nodes; the system will handle them later.
+        Its `properties` must include:
+            `id`: Assign a unique `id` starting with the chunk prefix `c@chunk@-node-` followed by a sequential number (e.g., "c@chunk@-node-1", "c@chunk@-node-2").
+            `name`: The lowercase version of the concept's name (e.g., "ordinance").
+            `displayName`: The Title Case of the concept's name (e.g., "Ordinance").
+            `mergeCount`: Initialized to `0`.
+            `refinementCount`: Initialized to `0`.
+
+B. Relationships:
+    `IS_A` Relationship: For every Instance Node, you MUST create an `IS_A` relationship connecting it to its corresponding Type Node.
+    Other Relationships: Create any other relationships you find between Instance Nodes (e.g., `AMENDS`, `CONTAINS`).
+
+2. Crucial Example
+
+If the text is "Ordinance 15-01 amends Section 20-7." from chunk @chunk@, your JSON output must include:
+
+An Instance Node for "Ordinance 15-01": {{"id": "c@chunk@-node-1", "labels": ["Instance"], "properties": {{"name": "ordinance 15-01", "displayName": "Ordinance 15-01", "mergeCount": 0, "refinementCount": 0}}}}
+An Instance Node for "Section 20-7": {{"id": "c@chunk@-node-2", "labels": ["Instance"], "properties": {{"name": "section 20-7", "displayName": "Section 20-7", "mergeCount": 0, "refinementCount": 0}}}}
+A Type Node for "Ordinance": {{"id": "c@chunk@-node-3", "labels": ["Type"], "properties": {{"name": "ordinance", "displayName": "Ordinance", "mergeCount": 0, "refinementCount": 0}}}}
+A Type Node for "DocumentSection": {{"id": "c@chunk@-node-4", "labels": ["Type"], "properties": {{"name": "documentsection", "displayName": "DocumentSection", "mergeCount": 0, "refinementCount": 0}}}}
+Relationships:
+    {{"source": "c@chunk@-node-1", "target": "c@chunk@-node-3", "type": "IS_A"}}
+    {{"source": "c@chunk@-node-2", "target": "c@chunk@-node-4", "type": "IS_A"}}
+    {{"source": "c@chunk@-node-1", "target": "c@chunk@-node-2", "type": "AMENDS"}}
+
+3. JSON Output
+
+Provide ONLY the JSON output formatted according to the schema. Do not include explanations.
+
+JSON Schema Format:
+@json_schema@
+
+Analyze the following text and follow all instructions, especially the creation of `IS_A` relationships for every entity: @text_chunk@
+\end{lstlisting}
+
+\section{Entity and Relationship Consolidation}
+After initial extraction, the LTM consolidation process begins. This involves a series of prompts designed to refine the raw graph by merging duplicate nodes.
+
+\subsection{Merging Instance Nodes}
+This prompt asks the LLM to perform entity resolution on `Instance` nodes. It is given a list of nodes and must identify pairs that represent the same real-world entity, returning a list of their IDs to be merged.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt for merging duplicate instance nodes.}, label={lst:prompt_merge_instance}]
+You are a data quality expert responsible for entity resolution. Your task is to identify and merge duplicate entity instances from the provided list.
+Analyze the following JSON list of entity instances. Identify pairs that represent the exact same real-world object or concept.
+
+**Key Rules:**
+1.  Merge based on semantic similarity or clear redundancy (e.g., "King Theron" and "Theron" refer to the same person).
+2.  The output **must** be a single, valid JSON object that conforms to the provided schema.
+3.  Do **not** include any text or explanations outside of the final JSON object.
+4.  Do **not** suggest merging an instance with itself.
+5.  If no instances should be merged, return an empty list of pairs.
+
+**JSON Schema:**
+@json_schema@
+
+Provide ONLY the JSON response.
+
+**Entity Instances to Analyze:**
+@instance_list_json@
+\end{lstlisting}
+
+\subsection{Merging Type Nodes}
+Similar to the instance merging prompt, this prompt focuses on consolidating the conceptual `Type` nodes. It asks the LLM to identify semantically equivalent types (e.g., 'Regulation' and 'Rule') and return their IDs for merging.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt for merging duplicate type nodes.}, label={lst:prompt_merge_type}]
+You are a data quality expert. Analyze the following list of JSON objects, where each object represents an entity type with a 'name' and a unique 'id'.
+Identify pairs of types that are semantically equivalent (e.g., 'Rule' and 'Regulation' are the same concept).
+
+**Key Rules:**
+1.  The output **must** be a single, valid JSON object that conforms to the provided schema.
+2.  The `merge_pairs` array should contain pairs of the unique **'id's** for the types that should be merged.
+3.  Do **not** return the names of the types, only their IDs.
+4.  Do **not** suggest merging a type with itself.
+5.  If no types should be merged, return an empty list.
+
+**JSON Schema:**
+@json_schema@
+
+Provide ONLY the JSON response.
+
+**Entity Types to Analyze:**
+@type_list_json@
+\end{lstlisting}
+
+\section{Ontology and Hierarchy Refinement}
+These prompts are used to build a more sophisticated ontology by identifying hierarchical relationships and correcting classifications.
+
+\subsection{Discovering Part-Whole Relationships}
+Meronymy (part-whole) relationships are inferred using two complementary prompts. The first (\texttt{IS\_PART\_OF}) checks if a given node is a component of another. The second (\texttt{HAS\_PART}) checks if a given node contains other nodes as its parts.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt to identify if an entity IS A PART OF another.}, label={lst:prompt_is_part_of}]
+You are an ontology expert specializing in meronymy (part-whole relationships).
+Your task is to determine if the 'part_candidate' entity is a component of ANY of the 'whole_candidates'.
+
+**Instructions:**
+1.  Analyze the 'part_candidate' (ID and name).
+2.  Review the list of 'whole_candidates' (ID and name).
+3.  Identify the SINGLE most likely entity from the list that the candidate is a part of.
+4.  The relationship must be a clear part-whole connection, either structural (a chapter is part of a book) or conceptual (a wheel is part of a car).
+5.  Return a JSON object with the 'part_id' and the 'whole_id' of the single best match.
+6.  If no valid part-whole relationship exists, return an empty JSON object: {}.
+
+**JSON Schema:**
+@json_schema@
+
+Provide ONLY the JSON response.
+---
+**Part Candidate to Analyze:**
+@part_candidate_json@
+
+**List of Potential Wholes:**
+@whole_candidates_json@
+---
+\end{lstlisting}
+
+\subsection{Instance Type Correction}
+This prompt aims to improve the accuracy of the graph's typing. It presents the LLM with an instance node, its current type, and a list of all available types, asking it to suggest a more specific classification if one exists.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt for correcting the type of an instance node.}, label={lst:prompt_itc}]
+You are a data quality analyst. Your task is to review an entity instance and its current type, then determine if a more specific classification exists from the list of available types.
+
+**Instructions:**
+1.  Analyze the `instance_name`, `instance_id`, and `current_type`.
+2.  Review the `available_types`, which is a list of JSON objects, each with a unique `id` and `name`.
+3.  If you find a more appropriate type, return a JSON object containing the original `instance_id` and the `id` of the new type (`new_type_id`).
+4.  If the current type is the most accurate, return an empty JSON object: {}.
+
+**JSON Schema:**
+@json_schema@
+
+**Instance to Review:**
+@instance_json@
+
+**Available Types:**
+@types_json@
+
+Provide ONLY the JSON response.
+\end{lstlisting}
+
+\subsection{Organizing Ontology Hierarchy}
+To create a formal `IS\_A` hierarchy between `Type` nodes, this prompt provides a child type and a list of potential parent types. The LLM's task is to select the single most direct parent, establishing a superclass-subclass relationship.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt for organizing the type hierarchy.}, label={lst:prompt_ooh}]
+Given the child entity type "@child_name@" (id: "@child_id@"), which of the following is its most direct parent?
+A direct parent should be the next most general concept.
+
+**Available parent types (with their IDs):**
+@potential_parents@
+
+**JSON Schema:**
+@json_schema@
+
+Return a single JSON object with the ID of the child and the ID of the selected parent.
+\end{lstlisting}
+
+\section{Evaluation}
+
+\subsection{Comparing Knowledge Graphs}
+For quantitative evaluation, this prompt instructs the LLM to act as an expert system comparing the generated graph against the ground truth. It must count the number of matching entities and relationships and return the results in a structured JSON format.
+
+\begin{lstlisting}[style=promptstyle, caption={Prompt for quantitatively comparing two knowledge graphs.}, label={lst:prompt_compare_kgs}]
+You are an expert system for comparing knowledge graphs. Compare the "Generated Graph" to the "Ground Truth" and provide a quantitative analysis.
+
+**Instructions:**
+1.  **Analyze Entities**: Count the total entities in the "Ground Truth" and how many of them are present in the "Generated Graph". A match occurs if the name is identical or a very close semantic equivalent.
+2.  **Analyze Relationships**: Count the total relationships in the "Ground Truth" and how many are present in the "Generated Graph". A match requires the source, target, and relationship type to be correct.
+
+**JSON Schema:**
+@json_schema@
+
+Provide your analysis ONLY in the specified JSON format.
+---
+**Ground Truth:**
+@ground_truth_text@
+---
+**Generated Graph:**
+@generated_graph_text@
+---
+\end{lstlisting}
+
+\section{Graphs / Experimental Results}
+TBD
